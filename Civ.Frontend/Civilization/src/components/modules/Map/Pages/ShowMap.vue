@@ -11,6 +11,10 @@
             </tr>
         </table>
 
+        <button @click="saveGame">
+            Save
+        </button>
+
 
     </div>
 </template>
@@ -46,6 +50,20 @@ export default {
         MapService.getVersion().then(version =>{
             this.print = version.value;
         })
+    },
+
+    methods:{
+        saveGame(){
+            let cells = [];
+            for(let i = 0; i < this.cells.length; i++){
+                cells = cells.concat(this.cells[i]);
+            }
+
+            MapService.saveGame(cells).then(version =>{
+                alert("Game Saved");
+            });
+        }
     }
+
 }
 </script>
