@@ -1,4 +1,7 @@
-CREATE TABLE Cell(
+
+CREATE DATABASE Civilization
+
+CREATE TABLE Civilization.dbo.Cell(
 X int NOT NULL,
 Y int NOT NULL,
 Man bit NULL,
