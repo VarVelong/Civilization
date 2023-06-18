@@ -1,4 +1,4 @@
-﻿namespace Civilization.Models
+﻿namespace Civilization.Data.Models
 {
     public class Cell
     {

@@ -1,10 +1,10 @@
-﻿using Civilization.Models;
+﻿using Civilization.Data.Models;
 using Dapper;
 using System.Data.SqlClient;
 
 namespace Civilization.Data
 {
-    public class FieldRepository
+    public class FieldRepository : IFieldRepository
     {
         private string connectionString;
         public FieldRepository()
@@ -12,7 +12,7 @@ namespace Civilization.Data
             connectionString = @"Data Source=LAPTOP-BIR7OQ53\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
         }
 
-        public void FieldAdd(List<Cell> cell)
+        public void FieldAdd(Cell cell)
         {
             string sql = "Exec dbo.prCellInsert @X, @Y, @Man";
 

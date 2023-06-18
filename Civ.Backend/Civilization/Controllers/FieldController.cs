@@ -1,6 +1,8 @@
-﻿using Civilization.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Civilization.Models;
 using Civilization.Business;
+using AutoMapper;
+using Civilization.Business.Models;
 
 namespace Civilization.Controllers
 {
@@ -9,13 +11,19 @@ namespace Civilization.Controllers
 
     public class FieldController: ControllerBase
     {
-        private FieldService fieldService = new FieldService();
+        private IFieldService fieldService;
+        private IMapper mapper;
 
+        public FieldController(IFieldService fieldService, IMapper mapper)
+        {
+            this.fieldService = fieldService;
+            this.mapper = mapper;
+        } 
 
         [HttpPost("create")]
-        public IActionResult Create(List<Cell> cells)
+        public IActionResult Create(List<CellViewModel> cells)
         {
-            fieldService.FieldAdd(cells);
+            fieldService.FieldAdd(mapper.Map<List<CellDTO>>(cells));
             return Ok(new { value = "dupa" });
         }
 
