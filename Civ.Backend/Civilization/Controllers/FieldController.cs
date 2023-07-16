@@ -27,6 +27,26 @@ namespace Civilization.Controllers
             return Ok(new { value = "dupa" });
         }
 
+        [HttpPatch("update")]
+        public IActionResult Update(List<CellViewModel> cells)
+        {
+            fieldService.FieldAdd(mapper.Map<List<CellDTO>>(cells));
+            return Ok(new { value = "dupa" });
+        }
+
+        //todo fix once front end is done
+        [HttpDelete("delete")]
+        public IActionResult Delete(List<CellViewModel> cells)
+        {
+            fieldService.FieldAdd(mapper.Map<List<CellDTO>>(cells));
+            return Ok(new { value = "dupa" });
+        }
+
+        [HttpGet("get")]
+        public IActionResult Get()
+        {
+            return Ok(new { value = "dupa" });
+        }
 
     }
 }

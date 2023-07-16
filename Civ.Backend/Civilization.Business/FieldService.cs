@@ -22,5 +22,24 @@ namespace Civilization.Business
                 fieldRepository.FieldAdd(mapper.Map<Cell>(cell));
             }
         }
+
+        public void FieldDelete(List<CellDTO> cells)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CellDTO> FieldGet()
+        {
+            var result = fieldRepository.FieldGet();
+            return mapper.Map<List<CellDTO>>(result);
+        }
+
+        public void FieldUpdate(List<CellDTO> cells)
+        {
+            foreach (var cell in cells)
+            {
+                fieldRepository.FieldUpdate(mapper.Map<Cell>(cell));
+            }
+        }
     }
 }

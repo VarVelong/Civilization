@@ -22,5 +22,34 @@ namespace Civilization.Data
             }
         }
 
+        public void FieldDelete(int x, int y)
+        {
+            string sql = "Exec dbo.prCellDelete @X, @Y";
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Execute(sql, new {x, y});
+            }
+        }
+
+        public IEnumerable<Cell> FieldGet()
+        {
+            string sql = "Exec dbo.prCellSelect";
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                return conn.Query<Cell>(sql);
+            }
+        }
+
+        public void FieldUpdate(Cell cell)
+        {
+            string sql = "Exec dbo.prCellUpdate @X, @Y, @Man";
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Execute(sql, cell);
+            }
+        }
     }
 }

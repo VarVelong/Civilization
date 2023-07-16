@@ -15,6 +15,9 @@ namespace Civilization
                 //Configuring Mapping
                 cfg.CreateMap<CellViewModel, CellDTO>();
                 cfg.CreateMap<CellDTO, Cell>();
+
+                cfg.CreateMap<CellDTO, CellViewModel>();
+                cfg.CreateMap<Cell, CellDTO>();
                 //Any Other Mapping Configuration ....
             }));
 
