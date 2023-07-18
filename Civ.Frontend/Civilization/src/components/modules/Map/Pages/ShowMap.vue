@@ -4,7 +4,7 @@
 
         <table id="gameBoard">
             <tr v-for="col in cells">
-                <td v-for="row in col" :title="`${row.x}-${row.y}` ">
+                <td v-for="row in col" :title="`${row.x}-${row.y}`" @click="moveMan(row.y, row.x)">
                     <img v-if="row.man" src="../../../../assets/Images/MAN.png" />
                     ddd
                 </td>
@@ -45,7 +45,7 @@ export default {
         }
     },
     mounted(){
-        this.cells[3][4].man=true;
+        this.cells[2][2].man=true;
 
         MapService.getVersion().then(version =>{
             this.print = version.value;
@@ -62,6 +62,19 @@ export default {
             MapService.saveGame(cells).then(version =>{
                 alert("Game Saved");
             });
+        },
+
+        fetchSaves(){
+            
+        },
+
+        moveMan(verse, column){
+            this.cells.forEach(element => {
+                element.forEach(element2 => {
+                    element2.man = false;
+                })
+            });
+            this.cells[verse][column].man = true;
         }
     }
 
