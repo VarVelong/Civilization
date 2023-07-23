@@ -14,7 +14,7 @@ namespace Civilization.Data
 
         public void FieldAdd(Cell cell)
         {
-            string sql = "Exec dbo.prCellInsert @X, @Y, @Man";
+            string sql = "Exec dbo.prCellInsert @X, @Y, @Man, @SaveId";
 
             using (var conn = new SqlConnection(connectionString))
             {

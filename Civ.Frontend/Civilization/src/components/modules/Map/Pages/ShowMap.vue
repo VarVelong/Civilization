@@ -34,6 +34,7 @@ import MapService from '../MapService';
 export default {
     data() {
         return {
+            savesNumber: 1,
             print: "", 
             cells: [
                 [ {x:0,y:0}, {x:1,y:0},  {x:2,y:0},  {x:3,y:0},  {x:4,y:0} ],
@@ -56,6 +57,10 @@ export default {
         saveGame(){
             let cells = [];
             for(let i = 0; i < this.cells.length; i++){
+                debugger
+                this.cells[i].forEach(cell =>{
+                    cell.saveId = this.savesNumber;
+                });
                 cells = cells.concat(this.cells[i]);
             }
 
