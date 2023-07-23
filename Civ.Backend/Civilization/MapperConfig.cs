@@ -13,11 +13,17 @@ namespace Civilization
             services.AddSingleton(sp => new MapperConfiguration(cfg =>
             {
                 //Configuring Mapping
-                cfg.CreateMap<CellViewModel, CellDTO>();
-                cfg.CreateMap<CellDTO, Cell>();
+                cfg.CreateMap<CellViewModel, CellDto>();
+                cfg.CreateMap<CellDto, Cell>();
 
-                cfg.CreateMap<CellDTO, CellViewModel>();
-                cfg.CreateMap<Cell, CellDTO>();
+                cfg.CreateMap<SaveViewModel, SaveDto>();
+                cfg.CreateMap<SaveDto, Save>();
+
+                cfg.CreateMap<CellDto, CellViewModel>();
+                cfg.CreateMap<Cell, CellDto>();
+
+                cfg.CreateMap<SaveDto, SaveViewModel>();
+                cfg.CreateMap<Save, SaveDto>();
                 //Any Other Mapping Configuration ....
             }));
 

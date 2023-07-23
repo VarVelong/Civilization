@@ -7,6 +7,6 @@ namespace Civilization.Data
         void FieldAdd(Cell cell);
         void FieldUpdate(Cell cell);
         void FieldDelete(int x, int y);
-        IEnumerable<Cell> FieldGet();
+        IEnumerable<Cell> FieldGet(int saveGameId);
     }
 }

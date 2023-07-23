@@ -12,25 +12,27 @@ namespace Civilization.Controllers
     public class FieldController: ControllerBase
     {
         private IFieldService fieldService;
+        private ISaveService saveService;
         private IMapper mapper;
 
-        public FieldController(IFieldService fieldService, IMapper mapper)
+        public FieldController(IFieldService fieldService, ISaveService saveService, IMapper mapper)
         {
             this.fieldService = fieldService;
+            this.saveService = saveService;
             this.mapper = mapper;
         } 
 
         [HttpPost("create")]
         public IActionResult Create(List<CellViewModel> cells)
         {
-            fieldService.FieldAdd(mapper.Map<List<CellDTO>>(cells));
+            fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
             return Ok(new { value = "dupa" });
         }
 
         [HttpPatch("update")]
         public IActionResult Update(List<CellViewModel> cells)
         {
-            fieldService.FieldAdd(mapper.Map<List<CellDTO>>(cells));
+            fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
             return Ok(new { value = "dupa" });
         }
 
@@ -38,15 +40,25 @@ namespace Civilization.Controllers
         [HttpDelete("delete")]
         public IActionResult Delete(List<CellViewModel> cells)
         {
-            fieldService.FieldAdd(mapper.Map<List<CellDTO>>(cells));
+            fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
             return Ok(new { value = "dupa" });
         }
 
         [HttpGet("get")]
-        public IActionResult Get()
+        public IActionResult Get(int saveId)
         {
-            return Ok(new { value = "dupa" });
+            var cells = fieldService.FieldGet(saveId);
+            return Ok(mapper.Map<List<CellViewModel>>(cells));
         }
 
+        [HttpGet("/save")]
+        //[Route("/crm/clinic/{Id}/Notes/{Page}")]
+        public IActionResult Get()
+        {
+            var cells = saveService.GetList();
+            return Ok(mapper.Map<List<SaveViewModel>>(cells));
+        }
+
+        //TODO: rename datetime to savedOn
     }
 }

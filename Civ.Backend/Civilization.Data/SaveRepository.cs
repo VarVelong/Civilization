@@ -4,51 +4,51 @@ using System.Data.SqlClient;
 
 namespace Civilization.Data
 {
-    public class FieldRepository : IFieldRepository
+    public class SaveRepository : ISaveRepository
     {
         private string connectionString;
-        public FieldRepository()
+        public SaveRepository()
         {
             connectionString = @"Data Source=LAPTOP-BIR7OQ53\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
         }
 
-        public void FieldAdd(Cell cell)
+        public void SaveAdd(Save save)
         {
-            string sql = "Exec dbo.prCellInsert @X, @Y, @Man, @SaveId";
+            string sql = "Exec dbo.prSaveInsert @SavedOn";
 
             using (var conn = new SqlConnection(connectionString))
             {
-                conn.Execute(sql, cell);
+                conn.Execute(sql, save);
             }
         }
 
-        public void FieldUpdate(Cell cell)
+        public void SaveUpdate(Save save)
         {
-            string sql = "Exec dbo.prCellUpdate @X, @Y, @Man, @SaveId";
+            string sql = "Exec dbo.prSaveUpdate @Id, @SavedOn";
 
             using (var conn = new SqlConnection(connectionString))
             {
-                conn.Execute(sql, cell);
+                conn.Execute(sql, save);
             }
         }
 
-        public void FieldDelete(int x, int y)
+        public void SaveDelete(int id)
         {
-            string sql = "Exec dbo.prCellDelete @X, @Y";
+            string sql = "Exec dbo.prSaveDelete @id";
 
             using (var conn = new SqlConnection(connectionString))
             {
-                conn.Execute(sql, new { x, y });
+                conn.Execute(sql, new { id });
             }
         }
 
-        public IEnumerable<Cell> FieldGet(int saveGameId)
+        public IEnumerable<Save> SaveGet()
         {
-            string sql = "Exec dbo.prCellSelect saveGameId";
+            string sql = "Exec dbo.prSavesSelect";
 
             using (var conn = new SqlConnection(connectionString))
             {
-                return conn.Query<Cell>(sql, new { saveGameId });
+                return conn.Query<Save>(sql);
             }
         }
     }

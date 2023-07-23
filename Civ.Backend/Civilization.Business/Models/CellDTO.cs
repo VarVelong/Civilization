@@ -1,6 +1,6 @@
 ﻿namespace Civilization.Business.Models
 {
-    public class CellDTO
+    public class CellDto
     {
         public int X { get; set; }
         public int Y { get; set; }

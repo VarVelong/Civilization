@@ -4,9 +4,9 @@ namespace Civilization.Business
 {
     public interface IFieldService
     {
-        void FieldAdd(List<CellDTO> cells);
-        void FieldUpdate(List<CellDTO> cells);
-        void FieldDelete(List<CellDTO> cells);
-        List<CellDTO> FieldGet();
+        void FieldAdd(List<CellDto> cells);
+        void FieldUpdate(List<CellDto> cells);
+        void FieldDelete(List<CellDto> cells);
+        List<CellDto> FieldGet(int saveId);
     }
 }

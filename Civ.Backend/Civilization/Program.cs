@@ -10,7 +10,9 @@ namespace Civilization
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddScoped<IFieldService, FieldService>();
+            builder.Services.AddScoped<ISaveService, SaveService>();
             builder.Services.AddScoped<IFieldRepository, FieldRepository>();
+            builder.Services.AddScoped<ISaveRepository, SaveRepository>();
 
             builder.Services.AddMapping();
 

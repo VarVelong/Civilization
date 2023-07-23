@@ -13,9 +13,11 @@ namespace Civilization.Business
         {
             this.fieldRepository = fieldRepository;
             this.mapper = mapper;
-        }        
+        }
 
-        public void FieldAdd(List<CellDTO> cells)
+        //TODO ADD WORKING WITH SAVE REPOSITORY
+
+        public void FieldAdd(List<CellDto> cells)
         {
             foreach(var cell in cells)
             {
@@ -23,18 +25,18 @@ namespace Civilization.Business
             }
         }
 
-        public void FieldDelete(List<CellDTO> cells)
+        public void FieldDelete(List<CellDto> cells)
         {
             throw new NotImplementedException();
         }
 
-        public List<CellDTO> FieldGet()
+        public List<CellDto> FieldGet(int saveId)
         {
-            var result = fieldRepository.FieldGet();
-            return mapper.Map<List<CellDTO>>(result);
+            var result = fieldRepository.FieldGet(saveId);
+            return mapper.Map<List<CellDto>>(result);
         }
 
-        public void FieldUpdate(List<CellDTO> cells)
+        public void FieldUpdate(List<CellDto> cells)
         {
             foreach (var cell in cells)
             {
