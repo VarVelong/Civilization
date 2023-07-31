@@ -17,5 +17,12 @@ export default {
             .then(response => {
                 return response.json();
             });
+    },
+
+    getSaves(){
+        return fetch("https://localhost:7058/save", { method:"GET" })
+            .then(response => {
+                return response.json();
+            });
     }
 }

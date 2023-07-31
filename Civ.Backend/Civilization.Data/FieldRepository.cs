@@ -44,7 +44,7 @@ namespace Civilization.Data
 
         public IEnumerable<Cell> FieldGet(int saveGameId)
         {
-            string sql = "Exec dbo.prCellSelect saveGameId";
+            string sql = "Exec dbo.prCellSelect @saveGameId";
 
             using (var conn = new SqlConnection(connectionString))
             {

@@ -12,7 +12,7 @@ namespace Civilization.Data
             connectionString = @"Data Source=LAPTOP-BIR7OQ53\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
         }
 
-        public void SaveAdd(Save save)
+        public Save SaveAdd(Save save)
         {
             string sql = "Exec dbo.prSaveInsert @SavedOn";
 
@@ -44,7 +44,7 @@ namespace Civilization.Data
 
         public IEnumerable<Save> SaveGet()
         {
-            string sql = "Exec dbo.prSavesSelect";
+            string sql = "Exec dbo.prSaveSelect";
 
             using (var conn = new SqlConnection(connectionString))
             {

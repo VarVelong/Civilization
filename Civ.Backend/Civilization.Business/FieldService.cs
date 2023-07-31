@@ -9,18 +9,24 @@ namespace Civilization.Business
     {
         private IFieldRepository fieldRepository;
         private IMapper mapper;
-        public FieldService(IFieldRepository fieldRepository, IMapper mapper)
+        private ISaveRepository saveRepository;
+
+        public FieldService(IFieldRepository fieldRepository, IMapper mapper, ISaveRepository saveRepository)
         {
             this.fieldRepository = fieldRepository;
             this.mapper = mapper;
+            this.saveRepository = saveRepository;
         }
 
         //TODO ADD WORKING WITH SAVE REPOSITORY
 
         public void FieldAdd(List<CellDto> cells)
         {
-            foreach(var cell in cells)
+            Save save = saveRepository.SaveAdd(new Save { SavedOn = DateTime.UtcNow });
+
+            foreach(var cell in cells)  
             {
+                cell.SaveId = save.Id;
                 fieldRepository.FieldAdd(mapper.Map<Cell>(cell));
             }
         }
