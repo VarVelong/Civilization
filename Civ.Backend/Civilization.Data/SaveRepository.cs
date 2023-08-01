@@ -18,7 +18,7 @@ namespace Civilization.Data
 
             using (var conn = new SqlConnection(connectionString))
             {
-                conn.Execute(sql, save);
+                return conn.QueryFirstOrDefault<Save>(sql, save);
             }
         }
 

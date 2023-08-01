@@ -2,14 +2,28 @@
     <div>
        {{ print }} 
 
-        <table id="gameBoard">
-            <tr v-for="col in cells">
-                <td v-for="row in col" :title="`${row.x}-${row.y}`" @click="moveMan(row.y, row.x)">
-                    <img v-if="row.man" src="../../../../assets/Images/MAN.png" />
-                    ddd
-                </td>
-            </tr>
-        </table>
+        <div>
+            <div>
+                <table id="gameBoard">
+                    <tr v-for="col in cells">
+                        <td v-for="square in col" :title="`${square.x}-${square.y}`" @click="selectSquare(square.x, square.y)" 
+                            :class="square.isSelected ? 'selected grass' : 'grass'">
+                            <img v-if="square.man" src="../../../../assets/Images/MAN.png" />
+                            
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="actionMenu">
+                <ul>
+                    <li>Create City</li>
+                    <li>Move</li>
+                    <li>Attack</li>
+                    <li>Delete Unit</li>
+                </ul>
+            </div>
+        </div>
+
 
         <ul>
             <li v-for="save in saves"> {{save.id}} saved on {{save.savedOn}} </li>
@@ -29,6 +43,27 @@
         border-color: blue;
         border-spacing: 0px;
     }
+
+    .grass{
+        height: 25px;
+        width: 25PX;
+        background-color: rgba(0, 255, 0, 0.222);
+    }
+
+    .selected{
+        border-color: red !important;
+
+    }
+
+    #gameBoard td:hover {
+    border-color: rgb(149, 196, 31);
+    border-style: dashed;
+    }
+
+    #actionMenu{
+        float: right;
+    }
+
 </style>
 
 <script>
@@ -40,18 +75,19 @@ export default {
         return {
             savesNumber: 1,
             print: "", 
-            cells: [
-                [ {x:0,y:0}, {x:1,y:0},  {x:2,y:0},  {x:3,y:0},  {x:4,y:0} ],
-                [ {x:0,y:1}, {x:1,y:1},  {x:2,y:1},  {x:3,y:1},  {x:4,y:1} ],
-                [ {x:0,y:2}, {x:1,y:2},  {x:2,y:2},  {x:3,y:2},  {x:4,y:2} ],
-                [ {x:0,y:3}, {x:1,y:3},  {x:2,y:3},  {x:3,y:3},  {x:4,y:3} ],
-                [ {x:0,y:4}, {x:1,y:4},  {x:2,y:4},  {x:3,y:4},  {x:4,y:4} ]                
-            ],
-
+            cells: [],
             saves: null
         }
     },
+    
     mounted(){
+        for (let i = 0; i < 10; i++){
+            this.cells.push([]);
+            for(let j = 0; j < 10; j++){
+                this.cells[i].push({x:i,y:j});
+            }
+        }
+
         this.cells[2][2].man=true;
 
         MapService.getVersion().then(version =>{
@@ -83,13 +119,21 @@ export default {
             })
         },
 
+
+
+        selectSquare(verse, column){
+            this.cells[verse][column].isSelected = true;
+        },
+
+        //TODO IS_MAN CHANGED TO ID_MAN, PASS DATA ABOUT THE MAN INTO ACTION MENU
+
         moveMan(verse, column){
             this.cells.forEach(element => {
                 element.forEach(element2 => {
                     element2.man = false;
                 })
             });
-            this.cells[verse][column].man = true;
+            this.cells[column][verse].man = true;
         }
     }
 
