@@ -73,7 +73,7 @@ import MapService from '../MapService';
 export default {
     data() {
         return {
-            savesNumber: 1,
+            newSaveId: 1,
             print: "", 
             cells: [],
             saves: null
@@ -100,22 +100,24 @@ export default {
         saveGame(){
             let cells = [];
             for(let i = 0; i < this.cells.length; i++){
-                debugger
                 this.cells[i].forEach(cell =>{
-                    cell.saveId = this.savesNumber;
+                    cell.saveId = this.newSaveId;
                 });
                 cells = cells.concat(this.cells[i]);
             }
 
             MapService.saveGame(cells).then(version =>{
                 alert("Game Saved");
+                this.fetchSaves();
             });
         },
 
         fetchSaves(){
             MapService.getSaves().then(saves =>{
-                debugger
                 this.saves = saves;
+                if(saves) {
+                    this.newSaveId = saves.length + 1;
+                }
             })
         },
 

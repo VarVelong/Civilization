@@ -14,7 +14,7 @@ namespace Civilization.Data
 
         public Save SaveAdd(Save save)
         {
-            string sql = "Exec dbo.prSaveInsert @SavedOn";
+            string sql = "Exec dbo.prSaveInsert @Id, @SavedOn";
 
             using (var conn = new SqlConnection(connectionString))
             {

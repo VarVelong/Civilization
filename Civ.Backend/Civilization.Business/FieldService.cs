@@ -22,7 +22,7 @@ namespace Civilization.Business
 
         public void FieldAdd(List<CellDto> cells)
         {
-            Save save = saveRepository.SaveAdd(new Save { SavedOn = DateTime.UtcNow });
+            Save save = saveRepository.SaveAdd(new Save { Id = cells.First().SaveId, SavedOn = DateTime.UtcNow });
 
             foreach(var cell in cells)  
             {
