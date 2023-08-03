@@ -32,6 +32,12 @@
         <button @click="saveGame">
             Save
         </button>
+        <button @click="loadGame">
+            Load
+        </button>
+        <button @click="onExit">
+            Leave to menu
+        </button>
 
 
     </div>
@@ -64,10 +70,12 @@
         float: right;
     }
 
+    button{
+        display: block;
+    }
 </style>
 
 <script>
-import { version } from 'vue';
 import MapService from '../MapService';
 
 export default {
@@ -136,6 +144,13 @@ export default {
                 })
             });
             this.cells[column][verse].man = true;
+        },
+
+        onExit(){
+            let response = confirm("Are you sure you want to leave?");
+            if(response == true){
+                this.$router.push('/');
+            }
         }
     }
 
