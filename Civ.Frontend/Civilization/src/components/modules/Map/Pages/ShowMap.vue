@@ -51,8 +51,8 @@
     }
 
     .grass{
-        height: 25px;
-        width: 25PX;
+        height: 100px;
+        width: 100px;
         background-color: rgba(0, 255, 0, 0.222);
     }
 

@@ -1,11 +1,16 @@
 <template>
-    <b-modal v-model="open" size="xl" :footer="false" id="my-modal"> something1 </b-modal>
+    <Modal :modalActive="open">
+        <div>test</div>
+        <button @click="closeModal">close</button>
+    </Modal>
 </template>
 
 <style>
 </style>
 
 <script>
+import Modal from '../Modal.vue';
+
 
 export default {
     data() {
@@ -15,21 +20,20 @@ export default {
     },
     
     props: {
-        value: {
+        open: {
             type: Boolean,
             required: true
         },
     },
 
-    computed: {
-        open: {
-            get() {
-                return this.value;
-            },
-            set(newValue) {
-                this.$emit('input', newValue);
-            }
-        },
+    components: {
+        Modal
+    },
+    
+    methods: {
+        closeModal() {
+            this.$emit("close");
+        }
     }
 }
 
