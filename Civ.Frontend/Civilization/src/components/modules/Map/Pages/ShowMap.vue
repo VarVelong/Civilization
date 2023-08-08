@@ -25,9 +25,7 @@
         </div>
 
 
-        <ul>
-            <li v-for="save in saves"> {{save.id}} saved on {{save.savedOn}} </li>
-        </ul>
+
 
         <button @click="saveGame">
             Save
@@ -51,8 +49,8 @@
     }
 
     .grass{
-        height: 100px;
-        width: 100px;
+        height: 25px;
+        width: 25px;
         background-color: rgba(0, 255, 0, 0.222);
     }
 
