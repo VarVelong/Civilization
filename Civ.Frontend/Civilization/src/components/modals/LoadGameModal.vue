@@ -2,10 +2,15 @@
     <Modal :modalActive="open">
         <div>
             <ul>
-            <li v-for="save in saves"> {{save.id}} saved on {{dateTime(save.savedOn).format('DD/MM/YYYY hh:mm')}} </li>
+                <li v-for="save in saves" :class="save.id == selectedId ? 'selected' : ''" @click="selectedId = save.id"> 
+                    {{save.id}} saved on {{dateTime(save.savedOn).format('DD/MM/YYYY hh:mm')}} 
+                </li>
             </ul>
         </div>
-        <button @click="closeModal">close</button>
+        <div class="buttonsOnRight">
+            <button @click="loadGame">Load</button>
+            <button @click="closeModal">Close</button>
+        </div>
     </Modal>
 </template>
 
@@ -24,9 +29,20 @@
     }
 
     button{
+        display: inline-block;
         margin-top: 20px;
         width: 50px;
         height: 30px;
+        margin-left: 5px;
+    }
+
+    .selected{
+        border-color: green;
+        background-color: rgb(117, 173, 32);
+    }
+
+    .buttonsOnRight{
+        text-align: right;
     }
 
 </style>
@@ -39,7 +55,8 @@ import moment from 'moment';
 export default {
     data() {
         return {
-            saves: null
+            saves: null,
+            selectedId: 0
         }
     },
     
@@ -71,7 +88,11 @@ export default {
 
         dateTime(value) {
             return moment.utc(value).local();
-        }           
+        },
+
+        loadGame(){
+            this.$emit("selectedId", this.selectedId);
+        }
     }
 }
 

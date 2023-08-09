@@ -44,7 +44,7 @@ namespace Civilization.Controllers
             return Ok(new { value = "dupa" });
         }
 
-        [HttpGet("get")]
+        [HttpGet("get/{saveId}")]        
         public IActionResult Get(int saveId)
         {
             var cells = fieldService.FieldGet(saveId);

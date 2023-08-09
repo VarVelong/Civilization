@@ -24,5 +24,12 @@ export default {
             .then(response => {
                 return response.json();
             });
+    },
+
+    getGameState(saveId){
+        return fetch(`https://localhost:7058/field/get/${saveId}`, { method:"GET" })
+            .then(response => {
+                return response.json();
+            });
     }
 }

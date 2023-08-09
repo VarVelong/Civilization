@@ -30,9 +30,9 @@
         <button @click="saveGame">
             Save
         </button>
-        <button @click="loadGame">
+        <!-- <button @click="loadGame">
             Load
-        </button>
+        </button> -->
         <button @click="onExit">
             Leave to menu
         </button>
@@ -86,15 +86,20 @@ export default {
         }
     },
     
-    mounted(){
-        for (let i = 0; i < 10; i++){
-            this.cells.push([]);
-            for(let j = 0; j < 10; j++){
-                this.cells[i].push({x:i,y:j});
+    async mounted(){
+        if(this.$route.params.id){
+            await this.loadGame(this.$route.params.id);
+        }
+        else{
+            for (let i = 0; i < 10; i++){
+                this.cells.push([]);
+                for(let j = 0; j < 10; j++){
+                    this.cells[i].push({x:i,y:j});
+                } 
             }
+            this.cells[5][5].man=true;
         }
 
-        this.cells[2][2].man=true;
 
         MapService.getVersion().then(version =>{
             this.print = version.value;
@@ -148,6 +153,21 @@ export default {
             let response = confirm("Are you sure you want to leave?");
             if(response == true){
                 this.$router.push('/');
+            }
+        },
+
+        async loadGame(loadId){
+            let flatArray = [];
+            await MapService.getGameState(loadId)
+            .then(cellArray => { 
+                flatArray = cellArray;
+            });
+
+            for (let i = 0; i < 10; i++){
+                this.cells.push([]);
+                for(let j = 0; j < 10; j++){
+                    this.cells[i].push(flatArray.find(cell => cell.x == i && cell.y == j));
+                } 
             }
         }
     }

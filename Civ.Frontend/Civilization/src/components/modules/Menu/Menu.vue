@@ -11,7 +11,7 @@
                 Options
             </button>
         </div>
-        <load-game-modal :open="modal.load" @close="modal.load = false"></load-game-modal>    
+        <load-game-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGame"></load-game-modal>    
     </container>
 </template>
 
@@ -47,6 +47,13 @@ export default {
     
     components:{
         LoadGameModal
+    },
+
+    methods: {
+        loadGame(loadId){
+            this.modal.load = false;
+            this.$router.push({name:'game', params: {id:loadId}});
+        }
     }
 }
 
