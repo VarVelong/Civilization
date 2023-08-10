@@ -1,9 +1,7 @@
 <template>
-    <div>
-       {{ print }} 
-
-        <div>
-            <div>
+    <div>   
+        <div id="wrapper">
+            <div id="gameArea">
                 <table id="gameBoard">
                     <tr v-for="col in cells">
                         <td v-for="square in col" :title="`${square.x}-${square.y}`" @click="selectSquare(square.x, square.y)" 
@@ -14,14 +12,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="actionMenu">
-                <ul>
-                    <li>Create City</li>
-                    <li>Move</li>
-                    <li>Attack</li>
-                    <li>Delete Unit</li>
-                </ul>
-            </div>
+            <ActionMenu id="actionMenu"/>
         </div>
 
 
@@ -30,14 +21,14 @@
         <button @click="saveGame">
             Save
         </button>
-        <!-- <button @click="loadGame">
+        <button @click="modal.load = true">
             Load
-        </button> -->
+        </button>
         <button @click="onExit">
             Leave to menu
         </button>
 
-
+        <load-game-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGameState"></load-game-modal>
     </div>
 </template>
 
@@ -48,15 +39,22 @@
         border-spacing: 0px;
     }
 
+    #gameBoard td{
+        height: 75px;
+        width: 75px;
+    }
+
+    #gameBoard{
+        table-layout:fixed;
+        width: 100%;
+    }
+
     .grass{
-        height: 25px;
-        width: 25px;
         background-color: rgba(0, 255, 0, 0.222);
     }
 
     .selected{
         border-color: red !important;
-
     }
 
     #gameBoard td:hover {
@@ -66,15 +64,43 @@
 
     #actionMenu{
         float: right;
+        width: 10%;
     }
 
     button{
         display: block;
     }
+
+    #wrapper{
+        width:100%;
+        display:flex;
+        margin-top: 50px;
+        overflow: hidden;
+    }
+
+    #gameArea{      
+        float:left;
+
+        width: auto;
+        margin-right: 200px;    
+        height: 100px;
+        background: purple;  
+    }
+
+/*try to the right the one that on the left; https://coder-coder.com/display-divs-side-by-side/*/
+
+    #actionMenu{
+        width: 200px;
+        background: yellow;
+
+    }
+
 </style>
 
 <script>
 import MapService from '../MapService';
+import loadGameModal from '../../../modals/loadGameModal.vue';
+import ActionMenu   from '../Components/ActionMenu.vue';
 
 export default {
     data() {
@@ -82,7 +108,10 @@ export default {
             newSaveId: 1,
             print: "", 
             cells: [],
-            saves: null
+            saves: null,
+            modal:{
+                load:false
+            }
         }
     },
     
@@ -105,6 +134,11 @@ export default {
             this.print = version.value;
         }); 
         this.fetchSaves();
+    },
+
+    components:{
+        loadGameModal,
+        ActionMenu 
     },
 
     methods:{
@@ -157,7 +191,7 @@ export default {
         },
 
         async loadGame(loadId){
-            let flatArray = [];
+            let flatArray = this.cells = [];
             await MapService.getGameState(loadId)
             .then(cellArray => { 
                 flatArray = cellArray;
@@ -169,6 +203,12 @@ export default {
                     this.cells[i].push(flatArray.find(cell => cell.x == i && cell.y == j));
                 } 
             }
+        },
+
+        loadGameState(loadId){
+            this.modal.load = false;
+            this.$router.push({name:'game', params: {id:loadId}});
+            this.loadGame(loadId);
         }
     }
 
