@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul>
-            <li>Create City</li>
+            <li @click="createCity">Create City</li>
             <li>Move</li>
             <li>Attack</li>
             <li>Delete Unit</li>
@@ -32,5 +32,22 @@ li:hover{
 </style>
 
 <script>
+export default {
+    data() {},
+
+    props:{
+        activeCell:{
+            type:Object,
+            required: true
+        }
+    },
+
+    methods:{
+        createCity(){
+            this.activeCell.city = {name: "dupa"};
+            this.$emit("cellUpdated", this.activeCell);
+        },
+    }
+}
 
 </script>

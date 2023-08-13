@@ -5,18 +5,15 @@
                 <table id="gameBoard">
                     <tr v-for="col in cells">
                         <td v-for="square in col" :title="`${square.x}-${square.y}`" @click="selectSquare(square.x, square.y)" 
-                            :class="square.isSelected ? 'selected grass' : 'grass'">
+                            :class="square === selectedCell ? 'selected grass' : 'grass'">
                             <img v-if="square.man" src="../../../../assets/Images/MAN.png" />
-                            
+                            <div v-if="square.city">{{square.city.name}}</div>
                         </td>
                     </tr>
                 </table>
             </div>
-            <ActionMenu id="actionMenu"/>
+            <ActionMenu id="actionMenu" v-show="selectedCell" :activeCell="selectedCell" @cellUpdated="updateCell"/>
         </div>
-
-
-
 
         <button @click="saveGame">
             Save
@@ -70,7 +67,7 @@
     button{
         display: block;
     }
-
+/* 
     #wrapper{
         width:100%;
         display:flex;
@@ -85,7 +82,7 @@
         margin-right: 200px;    
         height: 100px;
         background: purple;  
-    }
+    } */
 
 /*try to the right the one that on the left; https://coder-coder.com/display-divs-side-by-side/*/
 
@@ -109,6 +106,7 @@ export default {
             print: "", 
             cells: [],
             saves: null,
+            selectedCell: null,
             modal:{
                 load:false
             }
@@ -166,10 +164,12 @@ export default {
             })
         },
 
-
+        updateCell(cell){
+            this.selectedCell = cell;
+        },
 
         selectSquare(verse, column){
-            this.cells[verse][column].isSelected = true;
+            this.selectedCell = this.cells[verse][column];
         },
 
         //TODO IS_MAN CHANGED TO ID_MAN, PASS DATA ABOUT THE MAN INTO ACTION MENU
@@ -211,6 +211,5 @@ export default {
             this.loadGame(loadId);
         }
     }
-
 }
 </script>
