@@ -7,12 +7,12 @@
                         <td v-for="square in col" :title="`${square.x}-${square.y}`" @click="selectSquare(square.x, square.y)" 
                             :class="square === selectedCell ? 'selected grass' : 'grass'">
                             <img v-if="square.man" src="../../../../assets/Images/MAN.png" />
-                            <div v-if="square.city">{{square.city.name}}</div>
+                            <img v-if="square.city" src="../../../../assets/Images/baseIcon.png" :title="square.city.name"/>
                         </td>
                     </tr>
                 </table>
             </div>
-            <ActionMenu id="actionMenu" :activeCell="selectedCell" @cellUpdated="updateCell"/>
+            <ActionMenu  v-show="selectedCell && selectedCell.man" id="actionMenu" :activeCell="selectedCell" @cellUpdated="updateCell"/>
         </div>
 
         <div id="bottomMenu">
@@ -49,12 +49,6 @@
         min-width: 75px;
     }
 
-    #gameBoard{
-        /* table-layout:fixed; */
-        /*width: 100%; */
-
-    }
-
     .grass{
         background-color: rgba(0, 255, 0, 0.222);
     }
@@ -87,6 +81,11 @@
 
     #bottomMenu {
         clear: both;
+    }
+
+    #gameBoard td img{
+        max-width: 75px;
+        max-height: 75px;
     }
 
 </style>
