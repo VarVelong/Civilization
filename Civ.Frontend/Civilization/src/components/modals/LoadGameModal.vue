@@ -59,6 +59,12 @@ export default {
             selectedId: 0
         }
     },
+
+    watch:{
+        open(){
+            this.fetchSaves();
+        }
+    },
     
     props: {
         open: {

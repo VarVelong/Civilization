@@ -44,7 +44,9 @@ export default {
 
     methods:{
         createCity(){
-            this.activeCell.city = {name: "dupa"};
+            let cityName = prompt("Name your city")
+            this.activeCell.city = {name: cityName};
+            this.activeCell.man = null;
             this.$emit("cellUpdated", this.activeCell);
         },
     }
