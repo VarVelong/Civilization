@@ -1,5 +1,5 @@
 <template>
-    <div>   
+    <div id="page">   
         <div id="wrapper">
             <div id="gameArea">
                 <table id="gameBoard">
@@ -12,24 +12,32 @@
                     </tr>
                 </table>
             </div>
-            <ActionMenu id="actionMenu" v-show="selectedCell" :activeCell="selectedCell" @cellUpdated="updateCell"/>
+            <ActionMenu id="actionMenu" :activeCell="selectedCell" @cellUpdated="updateCell"/>
         </div>
 
-        <button @click="saveGame">
-            Save
-        </button>
-        <button @click="modal.load = true">
-            Load
-        </button>
-        <button @click="onExit">
-            Leave to menu
-        </button>
+        <div id="bottomMenu">
+            <button @click="saveGame">
+                Save
+            </button>
+            <button @click="modal.load = true">
+                Load
+            </button>
+            <button @click="onExit">
+                Leave to menu
+            </button>
+        </div>
 
         <load-game-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGameState"></load-game-modal>
     </div>
 </template>
 
 <style>
+    #page {
+        margin: auto;
+        margin-top: 20px;
+        width: 50%;
+    }
+
     #gameBoard, #gameBoard tr, #gameBoard td {
         border: 2px solid;
         border-color: blue;
@@ -38,12 +46,13 @@
 
     #gameBoard td{
         height: 75px;
-        width: 75px;
+        min-width: 75px;
     }
 
     #gameBoard{
-        table-layout:fixed;
-        width: 100%;
+        /* table-layout:fixed; */
+        /*width: 100%; */
+
     }
 
     .grass{
@@ -55,41 +64,29 @@
     }
 
     #gameBoard td:hover {
-    border-color: rgb(149, 196, 31);
-    border-style: dashed;
-    }
-
-    #actionMenu{
-        float: right;
-        width: 10%;
+        border-color: rgb(149, 196, 31);
+        border-style: dashed;
     }
 
     button{
         display: block;
     }
-/* 
+
     #wrapper{
-        width:100%;
-        display:flex;
-        margin-top: 50px;
-        overflow: hidden;
+        width: max-content;
     }
 
     #gameArea{      
-        float:left;
-
-        width: auto;
-        margin-right: 200px;    
-        height: 100px;
-        background: purple;  
-    } */
-
-/*try to the right the one that on the left; https://coder-coder.com/display-divs-side-by-side/*/
+        float: left;
+    }
 
     #actionMenu{
-        width: 200px;
-        background: yellow;
+        width: 250px;
+        float: left;
+    }
 
+    #bottomMenu {
+        clear: both;
     }
 
 </style>
