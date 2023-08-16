@@ -5,7 +5,7 @@
                 <table id="gameBoard">
                     <tr v-for="col in cells">
                         <td v-for="square in col" :title="`${square.x}-${square.y}`" @click="selectSquare(square.x, square.y)" 
-                            :class="square === selectedCell ? 'selected grass' : 'grass'">
+                            :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)">
                             <img v-if="square.man" src="../../../../assets/Images/MAN.png" />
                             <img v-if="square.city" src="../../../../assets/Images/baseIcon.png" :title="square.city.name"/>
                         </td>
@@ -149,6 +149,10 @@ export default {
                 alert("Game Saved");
                 this.fetchSaves();
             });
+        },
+
+        cellHover(cell){
+            
         },
 
         fetchSaves(){
