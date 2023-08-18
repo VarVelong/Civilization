@@ -2,12 +2,13 @@
     <div id="page">   
         <div id="wrapper">
             <div id="gameArea">
-                <table id="gameBoard">
+                <table id="gameBoard" @mouseleave="cleanPath">
                     <tr v-for="col in cells">
                         <td v-for="square in col" :title="`${square.x}-${square.y}`" @click="selectSquare(square.x, square.y)" 
                             :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)">
                             <img v-if="square.man" src="../../../../assets/Images/MAN.png" />
                             <img v-if="square.city" src="../../../../assets/Images/baseIcon.png" :title="square.city.name"/>
+                            {{square.movementCounter}}
                         </td>
                     </tr>
                 </table>
@@ -151,8 +152,36 @@ export default {
             });
         },
 
-        cellHover(cell){
-            
+        cleanPath(){
+            for(let i = 0; i < this.cells.length; i++){
+                this.cells[i].forEach(cell =>{
+                    cell.movementCounter = null;
+                });
+            }
+        },
+
+        cellHover(cell){ 
+            this.cleanPath();
+            if(!this.selectedCell || (this.selectedCell.x == cell.x && this.selectedCell.y == cell.y)){
+                return;
+            }
+            debugger
+            let coordinates = {x:this.selectedCell.x, y:this.selectedCell.y};
+            let iteration = 0;
+            while(coordinates.x != cell.x || coordinates.y != cell.y){
+                iteration++;
+                if(coordinates.x != cell.x){
+                    coordinates.x += Math.sign(cell.x - this.selectedCell.x);
+                }
+
+                if(coordinates.y != cell.y){
+                    coordinates.y += Math.sign(cell.y - this.selectedCell.y);
+                }
+
+                this.cells[coordinates.x][coordinates.y].movementCounter = iteration;
+
+
+            }
         },
 
         fetchSaves(){
@@ -173,15 +202,6 @@ export default {
         },
 
         //TODO IS_MAN CHANGED TO ID_MAN, PASS DATA ABOUT THE MAN INTO ACTION MENU
-
-        moveMan(verse, column){
-            this.cells.forEach(element => {
-                element.forEach(element2 => {
-                    element2.man = false;
-                })
-            });
-            this.cells[column][verse].man = true;
-        },
 
         onExit(){
             let response = confirm("Are you sure you want to leave?");
