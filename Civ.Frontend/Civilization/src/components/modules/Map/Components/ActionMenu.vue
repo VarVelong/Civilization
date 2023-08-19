@@ -47,7 +47,7 @@ export default {
             let cityName = prompt("Name your city")
             this.activeCell.city = {name: cityName};
             this.activeCell.man = null;
-            this.$emit("cellUpdated", this.activeCell);
+            this.$emit("cellUpdated", this.activeCell, true);
         },
     }
 }

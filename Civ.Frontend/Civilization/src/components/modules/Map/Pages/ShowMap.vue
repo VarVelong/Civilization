@@ -3,9 +3,10 @@
         <div id="wrapper">
             <div id="gameArea">
                 <table id="gameBoard" @mouseleave="cleanPath">
-                    <tr v-for="col in cells">
+                    <tr v-for="col in cellArray">
                         <td v-for="square in col" :title="`${square.x}-${square.y}`" @click="selectSquare(square.x, square.y)" 
-                            :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)">
+                            :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)"
+                            @contextmenu="moveUnit($event, square.x, square.y)" @dblclick="onDoubleClick(square.x, square.y)">
                             <img v-if="square.man" src="../../../../assets/Images/MAN.png" />
                             <img v-if="square.city" src="../../../../assets/Images/baseIcon.png" :title="square.city.name"/>
                             {{square.movementCounter}}
@@ -27,6 +28,10 @@
                 Leave to menu
             </button>
         </div>
+
+        <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit">
+    
+        </CityModal>
 
         <load-game-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGameState"></load-game-modal>
     </div>
@@ -95,17 +100,21 @@
 import MapService from '../MapService';
 import loadGameModal from '../../../modals/loadGameModal.vue';
 import ActionMenu   from '../Components/ActionMenu.vue';
+import CityModal from '../../../modals/CityModal.vue';
 
 export default {
     data() {
         return {
             newSaveId: 1,
             print: "", 
-            cells: [],
+            cellArray: [],
             saves: null,
             selectedCell: null,
+            selectedCity: null,
+            fieldSize: 10,
             modal:{
-                load:false
+                load:false,
+                city:false
             }
         }
     },
@@ -115,13 +124,13 @@ export default {
             await this.loadGame(this.$route.params.id);
         }
         else{
-            for (let i = 0; i < 10; i++){
-                this.cells.push([]);
-                for(let j = 0; j < 10; j++){
-                    this.cells[i].push({x:i,y:j});
+            for (let i = 0; i < this.fieldSize; i++){
+                this.cellArray.push([]);
+                for(let j = 0; j < this.fieldSize; j++){
+                    this.cellArray[i].push({x:i,y:j});
                 } 
             }
-            this.cells[5][5].man=true;
+            this.cellArray[5][5].man=true;
         }
 
 
@@ -132,29 +141,30 @@ export default {
     },
 
     components:{
-        loadGameModal,
-        ActionMenu 
-    },
+    loadGameModal,
+    ActionMenu,
+    CityModal
+},
 
     methods:{
         saveGame(){
-            let cells = [];
-            for(let i = 0; i < this.cells.length; i++){
-                this.cells[i].forEach(cell =>{
+            let cellArray = [];
+            for(let i = 0; i < this.cellArray.length; i++){
+                this.cellArray[i].forEach(cell =>{
                     cell.saveId = this.newSaveId;
                 });
-                cells = cells.concat(this.cells[i]);
+                cellArray = cellArray.concat(this.cellArray[i]);
             }
 
-            MapService.saveGame(cells).then(version =>{
+            MapService.saveGame(cellArray).then(version =>{
                 alert("Game Saved");
                 this.fetchSaves();
             });
         },
 
         cleanPath(){
-            for(let i = 0; i < this.cells.length; i++){
-                this.cells[i].forEach(cell =>{
+            for(let i = 0; i < this.cellArray.length; i++){
+                this.cellArray[i].forEach(cell =>{
                     cell.movementCounter = null;
                 });
             }
@@ -165,7 +175,7 @@ export default {
             if(!this.selectedCell || (this.selectedCell.x == cell.x && this.selectedCell.y == cell.y)){
                 return;
             }
-            debugger
+            
             let coordinates = {x:this.selectedCell.x, y:this.selectedCell.y};
             let iteration = 0;
             while(coordinates.x != cell.x || coordinates.y != cell.y){
@@ -178,9 +188,7 @@ export default {
                     coordinates.y += Math.sign(cell.y - this.selectedCell.y);
                 }
 
-                this.cells[coordinates.x][coordinates.y].movementCounter = iteration;
-
-
+                this.cellArray[coordinates.x][coordinates.y].movementCounter = iteration;
             }
         },
 
@@ -193,15 +201,41 @@ export default {
             })
         },
 
-        updateCell(cell){
+        updateCell(cell, clearSelection){
             this.selectedCell = cell;
+            if(clearSelection){
+                this.selectedCell = null;
+            }
         },
 
         selectSquare(verse, column){
-            this.selectedCell = this.cells[verse][column];
+            if(this.cellArray[verse][column].man){
+                this.selectedCell = this.cellArray[verse][column];
+            }
         },
 
-        //TODO IS_MAN CHANGED TO ID_MAN, PASS DATA ABOUT THE MAN INTO ACTION MENU
+        moveUnit(e, verse, column){
+            this.selectedCell.man = false;
+            this.cellArray[verse][column].man = true;
+            this.selectedCell = null;
+            e.preventDefault();
+        },
+
+        onDoubleClick(verse, column){
+            this.selectedCell = this.cellArray[verse][column];
+            this.modal.city = this.cellArray[verse][column].city;
+        },
+
+        spawnUnit(man){
+            if(this.selectedCell.y != this.fieldSize - 1){
+                this.cellArray[this.selectedCell.x][this.selectedCell.y - 1].man = man;
+            }
+            else{
+                this.cellArray[this.selectedCell.x][this.selectedCell.y + 1].man = man;
+            }
+        },
+            
+        //TODO fix axises by replacing x with y and y with x (they are opposite)
 
         onExit(){
             let response = confirm("Are you sure you want to leave?");
@@ -211,16 +245,16 @@ export default {
         },
 
         async loadGame(loadId){
-            let flatArray = this.cells = [];
+            let flatArray = this.cellArray = [];
             await MapService.getGameState(loadId)
             .then(cellArray => { 
                 flatArray = cellArray;
             });
 
             for (let i = 0; i < 10; i++){
-                this.cells.push([]);
+                this.cellArray.push([]);
                 for(let j = 0; j < 10; j++){
-                    this.cells[i].push(flatArray.find(cell => cell.x == i && cell.y == j));
+                    this.cellArray[i].push(flatArray.find(cell => cell.x == i && cell.y == j));
                 } 
             }
         },

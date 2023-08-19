@@ -27,7 +27,8 @@
         position: fixed;
         align-items: center;
         justify-content: center;
-        background-color: grey;
+        background-color: rgba(128, 128, 128, 0.718);
+        
     }
 
     .modalInner{
