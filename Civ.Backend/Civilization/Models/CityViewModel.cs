@@ -1,8 +1,8 @@
 ﻿namespace Civilization.Models
 {
-    public class CityVievModel
+    public class CityViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
 
     }

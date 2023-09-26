@@ -3,7 +3,7 @@
 
 CREATE TABLE Civilization.dbo.[Save](
 Id int NOT NULL PRIMARY KEY,
-[DateTime] DateTime2 NOT NULL);
+[SavedOn] DateTime2 NOT NULL);
 
 ALTER TABLE Civilization.[dbo].[Cell]
 ADD SaveId int NOT NULL FOREIGN KEY REFERENCES Civilization.dbo.[Save](Id);

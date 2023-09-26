@@ -9,7 +9,7 @@ namespace Civilization.Data
         private string connectionString;
         public SaveRepository()
         {
-            connectionString = @"Data Source=LAPTOP-BIR7OQ53\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
+            connectionString = @"Data Source=DIGIPC\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
         }
 
         public Save SaveAdd(Save save)

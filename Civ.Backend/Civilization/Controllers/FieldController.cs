@@ -52,13 +52,10 @@ namespace Civilization.Controllers
         }
 
         [HttpGet("/save")]
-        //[Route("/crm/clinic/{Id}/Notes/{Page}")]
         public IActionResult Get()
         {
             var cells = saveService.GetList();
             return Ok(mapper.Map<List<SaveViewModel>>(cells));
         }
-
-        //TODO: rename datetime to savedOn
     }
 }

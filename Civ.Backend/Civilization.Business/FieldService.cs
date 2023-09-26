@@ -18,13 +18,11 @@ namespace Civilization.Business
             this.saveRepository = saveRepository;
         }
 
-        //TODO ADD WORKING WITH SAVE REPOSITORY
-
         public void FieldAdd(List<CellDto> cells)
         {
-            Save save = saveRepository.SaveAdd(new Save { Id = cells.First().SaveId, SavedOn = DateTime.UtcNow });
+            Save save = saveRepository.SaveAdd(new Save { Id = cells.First().SaveId.Value, SavedOn = DateTime.UtcNow });
 
-            foreach(var cell in cells)  
+            foreach(var cell in cells)
             {
                 cell.SaveId = save.Id;
                 fieldRepository.FieldAdd(mapper.Map<Cell>(cell));

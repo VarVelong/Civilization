@@ -1,4 +1,5 @@
 
+USE Civilization
 
 CREATE TABLE dbo.City
 (	[Id] [int] NOT NULL PRIMARY KEY IDENTITY(1,1),
