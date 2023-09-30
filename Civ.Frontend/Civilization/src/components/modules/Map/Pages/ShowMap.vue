@@ -18,15 +18,19 @@
         </div>
 
         <div id="bottomMenu">
-            <button @click="saveGame">
+            <div>
+                <button @click="saveGame">
                 Save
-            </button>
-            <button @click="modal.load = true">
+                </button>
+                <button @click="modal.load = true">
                 Load
-            </button>
-            <button @click="onExit">
-                Leave to menu
-            </button>
+                </button>
+            </div>
+            <div>
+                <button @click="onExit">
+                    Leave to menu
+                </button>
+            </div>
         </div>
 
         <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit">
@@ -41,7 +45,6 @@
     #page {
         margin: auto;
         margin-top: 20px;
-        width: 50%;
     }
 
     #gameBoard, #gameBoard tr, #gameBoard td {
@@ -68,8 +71,18 @@
         border-style: dashed;
     }
 
-    button{
-        display: block;
+    #bottomMenu button {
+        font-size: 32px;
+        padding: 5px;
+        margin: 5px;
+    }
+
+    #bottomMenu div:first-child {
+        float: left;
+    }
+
+    #bottomMenu div:nth-child(2) {
+        float: right;
     }
 
     #wrapper{

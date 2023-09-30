@@ -9,7 +9,7 @@ namespace Civilization.Data
         private string connectionString;
         public FieldRepository()
         {
-            connectionString = @"Data Source=DIGIPC\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
+            connectionString = @"Data Source=VarVelongLaptop\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
         }
 
         public void FieldAdd(Cell cell)
