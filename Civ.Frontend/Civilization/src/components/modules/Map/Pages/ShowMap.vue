@@ -116,7 +116,7 @@
 
 <script>
 import MapService from '../MapService';
-import loadGameModal from '../../../modals/loadGameModal.vue';
+import loadGameModal from '../../../modals/LoadGameModal.vue';
 import ActionMenu from '../Components/ActionMenu.vue';
 import CityModal from '../../../modals/CityModal.vue';
 
