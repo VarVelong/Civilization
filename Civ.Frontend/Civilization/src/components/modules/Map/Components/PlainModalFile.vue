@@ -3,10 +3,8 @@
         <div>
 
         </div>
-        <div class="buttonsOnRight">
-            <button @click="loadGame">Load</button>
-            <button @click="spawnUnit">Spawn Unit</button>
-            <button @click="closeModal">Close</button>
+        <div>
+
         </div>
     </Modal>
 </template>
@@ -19,10 +17,6 @@
         height: 30px;
         margin-left: 5px;
     }
-    .buttonsOnRight{
-        text-align: right;
-    }
-
 </style>
 
 <script>
@@ -31,8 +25,7 @@ import Modal from '../../../Modal.vue';
 export default {
     data() {
         return {
-            saves: null,
-            selectedId: 0
+
         }
     },
 
@@ -59,15 +52,7 @@ export default {
     methods: {
         closeModal() {
             this.$emit("close");
-        },
-
-        spawnUnit(city){
-            let man = true;
-            this.$emit("spawn-unit", man);
-            this.$emit("close");
         }
     }
 }
-
-
 </script>

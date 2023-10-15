@@ -1,10 +1,11 @@
 <template>
     <div id="background">
         <img id="cityHall" src="../../../../assets/Images/CityHall.png" title="City Hall" @click="openCityHall" />
-        <city-hall-modal :open="modal.cityHall" @close="modal.cityHall = false"></city-hall-modal>
+        <city-hall-modal :open="modal.cityHall" @close="modal.cityHall = false" @barrackCreated="barrackCreated" ></city-hall-modal>
 
-        <img id="t1barracks" src="../../../../assets/Images/barracks.png" title="Tier 1 Barracks" @click="openBarracks" />
-        <tier1-barracks-modal :open="modal.barracks" @close="modal.barracks = false"></tier1-barracks-modal>
+        <img v-if="barracks.length > 0" src="../../../../assets/Images/barracks.png" title="Barracks" @click="openBarracks" />
+        <img v-if="barracks.length > 1" src="../../../../assets/Images/barracks.png" title="Barracks" @click="openBarracks" />
+        <barracks-modal :open="modal.barracks" @close="modal.barracks = false"></barracks-modal>
 
         <button @click="returnToMap" id="returnButton"> RETURN </button>
     </div>
@@ -41,7 +42,7 @@
 
 <script>
 import CityHallModal from '../Components/CityHallModal.vue';
-import Tier1BarracksModal from '../Components/Barracks1Modal.vue';
+import BarracksModal from '../Components/BarracksModal.vue';
 
 export default {
     data() {
@@ -49,13 +50,14 @@ export default {
             modal: {
                 cityHall: false,
                 barracks: false
-            }
+            },
+            barracks: []
         }
     },
 
     components: {
         CityHallModal,
-        Tier1BarracksModal
+        BarracksModal
     },
 
     methods: {
@@ -70,6 +72,10 @@ export default {
         returnToMap() {
             this.$router.push({ name: 'game', params: { id: 1 } });
             //find a way to pass all the date about city back
+        },
+
+        barrackCreated(barrack) {
+            this.barracks.push(barrack);
         }
     }
 }

@@ -40,8 +40,8 @@
         <!-- <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit">
     
         </CityModal> -->
-
-        <load-game-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGameState"></load-game-modal>
+        <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell.man"></HeroScreenModal>
+        <game-load-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGameState"></game-load-modal>
     </div>
 </template>
 
@@ -116,9 +116,10 @@
 
 <script>
 import MapService from '../MapService';
-import loadGameModal from '../../../modals/LoadGameModal.vue';
 import ActionMenu from '../Components/ActionMenu.vue';
-import CityModal from '../../../modals/CityModal.vue';
+import CityModal from '../Components/CityModal.vue';
+import GameLoadModal from '../../../modals/GameLoadModal.vue'
+import HeroScreenModal from '../Components/HeroScreenModal.vue'
 
 export default {
     data() {
@@ -132,7 +133,8 @@ export default {
             fieldSize: 10,
             modal: {
                 load: false,
-                city: false
+                city: false,
+                heroScreen: false
             }
         }
     },
@@ -159,9 +161,10 @@ export default {
     },
 
     components: {
-        loadGameModal,
         ActionMenu,
-        CityModal
+        CityModal,
+        GameLoadModal,
+        HeroScreenModal
     },
 
     methods: {
@@ -241,9 +244,11 @@ export default {
 
         onDoubleClick(verse, column) {
             this.selectedCell = this.cellArray[verse][column];
-            // this.modal.city = this.cellArray[verse][column].city;
             if (this.selectedCell.city) {
                 this.$router.push({ name: 'city', params: { id: this.selectedCell.city.name } });
+            }
+            if (this.selectedCell.man) {
+                this.modal.heroScreen = true;
             }
         },
 

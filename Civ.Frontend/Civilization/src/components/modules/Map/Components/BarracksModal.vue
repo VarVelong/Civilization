@@ -1,15 +1,11 @@
 <template>
     <Modal :modalActive="open">
         <div>
-            <button @click="createBarrack(barrackTiers[0])"> Create tier 1 barracks </button>
-            <button @click="createBarrack(barrackTiers[1])"> Create tier 2 barracks </button>
-            <button @click="createBarrack(barrackTiers[2])"> Create tier 3 barracks </button>
-            <button @click="createBarrack(barrackTiers[3])"> Create tier 4 barracks </button>
-            <button @click="createBarrack(barrackTiers[4])"> Create tier 5 barracks </button>
-            <button @click="createBarrack(barrackTiers[5])"> Create tier 6 barracks </button>
+
         </div>
         <div class="buttonsOnRight">
             <button @click="loadGame">Load</button>
+            <button @click="spawnUnit">Spawn Unit</button>
             <button @click="closeModal">Close</button>
         </div>
     </Modal>
@@ -31,13 +27,13 @@
 
 <script>
 import Modal from '../../../Modal.vue';
-import BarracksTier from '../Enums/BarracksTier.js'
 
 export default {
     data() {
         return {
             saves: null,
-            selectedId: 0
+            selectedId: 0,
+            city: null
         }
     },
 
@@ -56,12 +52,6 @@ export default {
     components: {
         Modal
     },
-
-    computed: {
-        barrackTiers(){
-            return BarracksTier;
-        }   
-    },
     
     mounted(){
     
@@ -72,8 +62,9 @@ export default {
             this.$emit("close");
         },
 
-        createBarrack(barracksTier) {
-            this.$emit("barrackCreated", { tier: barracksTier.id });
+        spawnUnit(city){
+            let man = true;
+            this.$emit("spawn-unit", man);
             this.$emit("close");
         }
     }

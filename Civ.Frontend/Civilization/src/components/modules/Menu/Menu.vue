@@ -11,7 +11,7 @@
                 Options
             </button>
         </div>
-        <load-game-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGame"></load-game-modal>    
+        <game-load-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGame"></game-load-modal>    
     </container>
 </template>
 
@@ -34,7 +34,7 @@
 </style>
 
 <script>
-import LoadGameModal from '../../modals/loadGameModal.vue'
+import GameLoadModal from '../../modals/GameLoadModal.vue'
 
 export default {
     data() {
@@ -45,8 +45,8 @@ export default {
         }
     },
     
-    components:{
-        LoadGameModal
+    components: {
+        GameLoadModal
     },
 
     methods: {
