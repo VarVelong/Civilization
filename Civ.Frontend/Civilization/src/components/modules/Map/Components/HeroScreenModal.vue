@@ -21,6 +21,9 @@
 
 <script>
 import Modal from '../../../Modal.vue';
+import Unit from '../Models/Unit.js';
+
+//inventory, equipment, abilities, statistics, team(what creatures are inside heroes party)
 
 export default {
     data() {
@@ -39,6 +42,11 @@ export default {
             type: Boolean,
             required: true
         },
+
+        hero: {
+            type: Unit,
+            required: true
+        }
     },
 
     components: {

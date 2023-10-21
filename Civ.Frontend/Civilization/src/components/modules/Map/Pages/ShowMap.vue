@@ -9,7 +9,7 @@
                             :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)"
                             @contextmenu="moveUnit($event, square.x, square.y)"
                             @dblclick="onDoubleClick(square.x, square.y)">
-                            <img v-if="square.man" src="../../../../assets/Images/MAN.png" />
+                            <img v-if="square.unit" src="../../../../assets/Images/MAN.png" />
                             <img v-if="square.city" src="../../../../assets/Images/baseIcon.png"
                                 :title="square.city.name" />
                             {{ square.movementCounter }}
@@ -17,7 +17,7 @@
                     </tr>
                 </table>
             </div>
-            <ActionMenu v-show="selectedCell && selectedCell.man" id="actionMenu" :activeCell="selectedCell"
+            <ActionMenu v-show="selectedCell && selectedCell.unit" id="actionMenu" :activeCell="selectedCell"
                 @cellUpdated="updateCell" />
         </div>
 
@@ -40,7 +40,7 @@
         <!-- <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit">
     
         </CityModal> -->
-        <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell.man"></HeroScreenModal>
+        <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit"></HeroScreenModal>
         <game-load-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGameState"></game-load-modal>
     </div>
 </template>
@@ -120,6 +120,8 @@ import ActionMenu from '../Components/ActionMenu.vue';
 import CityModal from '../Components/CityModal.vue';
 import GameLoadModal from '../../../modals/GameLoadModal.vue'
 import HeroScreenModal from '../Components/HeroScreenModal.vue'
+import Unit from '../Models/Unit.js'
+import UnitType from '../Enums/UnitType.js'
 
 export default {
     data() {
@@ -150,7 +152,7 @@ export default {
                     this.cellArray[i].push({ x: i, y: j });
                 }
             }
-            this.cellArray[5][5].man = true;
+            this.cellArray[5][5].unit = new Unit(UnitType.Settler, "Jacek", 1);
         }
 
 
@@ -230,14 +232,14 @@ export default {
         },
 
         selectSquare(verse, column) {
-            if (this.cellArray[verse][column].man) {
+            if (this.cellArray[verse][column].unit) {
                 this.selectedCell = this.cellArray[verse][column];
             }
         },
 
         moveUnit(e, verse, column) {
-            this.selectedCell.man = false;
-            this.cellArray[verse][column].man = true;
+            this.selectedCell.unit = false;
+            this.cellArray[verse][column].unit = true;
             this.selectedCell = null;
             e.preventDefault();
         },
@@ -247,18 +249,18 @@ export default {
             if (this.selectedCell.city) {
                 this.$router.push({ name: 'city', params: { id: this.selectedCell.city.name } });
             }
-            if (this.selectedCell.man) {
+            if (this.selectedCell.unit) {
                 this.modal.heroScreen = true;
             }
         },
 
-        spawnUnit(man) {
-            if (this.selectedCell.y != this.fieldSize - 1) {
-                this.cellArray[this.selectedCell.x][this.selectedCell.y - 1].man = man;
-            }
-            else {
-                this.cellArray[this.selectedCell.x][this.selectedCell.y + 1].man = man;
-            }
+        spawnUnit(unit) {
+            // if (this.selectedCell.y != this.fieldSize - 1) {
+            //     this.cellArray[this.selectedCell.x][this.selectedCell.y - 1].unit = unit;
+            // }
+            // else {
+            //     this.cellArray[this.selectedCell.x][this.selectedCell.y + 1].unit = unit;
+            // }
         },
 
         //TODO fix axises by replacing x with y and y with x (they are opposite)
