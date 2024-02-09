@@ -23,16 +23,17 @@ namespace Civilization.Controllers
         } 
 
         [HttpPost("create")]
-        public IActionResult Create(List<CellViewModel> cells)
+        public IActionResult Create(FieldCreateViewModel saveViewModel)
         {
-            fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
+            fieldService.FieldAdd(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType));
             return Ok(new { value = "dupa" });
         }
 
         [HttpPatch("update")]
-        public IActionResult Update(List<CellViewModel> cells)
+        public IActionResult Update(FieldCreateViewModel saveViewModel)
         {
-            fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
+            //add parameter save slot nullable
+            fieldService.FieldAdd(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType));
             return Ok(new { value = "dupa" });
         }
 
@@ -40,7 +41,7 @@ namespace Civilization.Controllers
         [HttpDelete("delete")]
         public IActionResult Delete(List<CellViewModel> cells)
         {
-            fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
+            //fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
             return Ok(new { value = "dupa" });
         }
 

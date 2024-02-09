@@ -18,11 +18,35 @@ namespace Civilization.Business
             this.saveRepository = saveRepository;
         }
 
-        public void FieldAdd(List<CellDto> cells)
+        public void FieldAdd(List<CellDto> cells, SaveTypeDto saveType)
         {
-            Save save = saveRepository.SaveAdd(new Save { Id = cells.First().SaveId.Value, SavedOn = DateTime.UtcNow });
+            const int maxIdForUserSaves = 15;
+            const int saveStateSlotId = 16;
+            const int maxIdForAutoSaves = 19;
+            switch (saveType)
+            {
+                case SaveTypeDto.UserSave:
+                    {
+                        SaveAdd(cells, saveRepository.SaveGet().OrderByDescending(s => s.Id).FirstOrDefault(s => s.Id <= maxIdForUserSaves).Id);
+                        break;
+                    }
+                case SaveTypeDto.AutoSave:
+                    {
+                        break;
+                    }
+                case SaveTypeDto.SaveState:
+                    {
+                        break;
+                    }
+            }
 
-            foreach(var cell in cells)
+        }
+
+        private void SaveAdd(List<CellDto> cells, int saveId)
+        {
+            Save save = saveRepository.SaveAdd(new Save { Id = saveId, SavedOn = DateTime.UtcNow });
+
+            foreach (var cell in cells)
             {
                 cell.SaveId = save.Id;
                 fieldRepository.FieldAdd(mapper.Map<Cell>(cell));
