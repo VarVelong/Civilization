@@ -9,7 +9,7 @@
                                 @click="selectSquare(square.x, square.y)"
                                 :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)"
                                 @contextmenu="moveUnit($event, square.x, square.y)"
-                                @dblclick="onDoubleClick(square.x, square.y)">
+                                @dblclick="onCellDoubleClick(square.x, square.y)">
                                 <img v-if="square.unit" src="../../../../assets/Images/MAN.png" />
                                 <img v-if="square.city" src="../../../../assets/Images/baseIcon.png"
                                     :title="square.city.name" />
@@ -28,7 +28,7 @@
 
         
 
-        <!-- <div id="bottomMenu">
+        <div id="bottomMenu">
             <div>
                 <button @click="saveGame">
                     Save
@@ -42,7 +42,7 @@
                     Leave to menu
                 </button>
             </div>
-        </div> -->
+        </div>
 
         <!-- <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit">
     
@@ -129,6 +129,7 @@ import GameLoadModal from '../../../modals/GameLoadModal.vue'
 import HeroScreenModal from '../Components/HeroScreenModal.vue'
 import Unit from '../Models/Unit.js'
 import UnitType from '../Enums/UnitType.js'
+import SaveType from '../Enums/SaveType.js'
 
 export default {
     data() {
@@ -177,7 +178,7 @@ export default {
     },
 
     methods: {
-        saveGame() {
+        getSaveGameData() {
             let cellArray = [];
             for (let i = 0; i < this.cellArray.length; i++) {
                 this.cellArray[i].forEach(cell => {
@@ -185,8 +186,18 @@ export default {
                 });
                 cellArray = cellArray.concat(this.cellArray[i]);
             }
-
-            MapService.saveGame(cellArray).then(version => {
+            return cellArray;
+        },
+        saveGame() {
+            let saveGameData = this.getSaveGameData();
+            MapService.saveGame(saveGameData, SaveType.UserSave).then(version => {
+                alert("Game Saved");
+                this.fetchSaves();
+            });
+        },
+        saveState(){
+            let saveGameData = this.getSaveGameData();
+            MapService.saveGame(saveGameData, SaveType.SaveState).then(version => {
                 alert("Game Saved");
                 this.fetchSaves();
             });
@@ -251,9 +262,10 @@ export default {
             e.preventDefault();
         },
 
-        onDoubleClick(verse, column) {
+        onCellDoubleClick(verse, column) {
             this.selectedCell = this.cellArray[verse][column];
             if (this.selectedCell.city) {
+                this.saveState();
                 this.$router.push({ name: 'city', params: { id: this.selectedCell.city.name } });
             }
             if (this.selectedCell.unit) {

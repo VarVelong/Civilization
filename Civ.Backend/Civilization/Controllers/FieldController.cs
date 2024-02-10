@@ -33,7 +33,7 @@ namespace Civilization.Controllers
         public IActionResult Update(FieldCreateViewModel saveViewModel)
         {
             //add parameter save slot nullable
-            fieldService.FieldAdd(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType));
+            fieldService.FieldUpdate(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType), saveViewModel.SaveSlotNumber);
             return Ok(new { value = "dupa" });
         }
 

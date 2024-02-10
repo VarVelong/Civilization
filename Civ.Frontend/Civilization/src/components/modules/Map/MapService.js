@@ -7,13 +7,14 @@ export default {
             });
     },
 
-    saveGame(cells) {
-        return fetch("https://localhost:7058/Field/create", { method:"POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        body:JSON.stringify(cells)})
+    saveGame(cells, saveType) {
+        return fetch("https://localhost:7058/Field/create", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({cells:cells, saveType:saveType})})
             .then(response => {
                 return response.json();
             });
