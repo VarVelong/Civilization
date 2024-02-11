@@ -24,11 +24,11 @@ namespace Civilization.Data
 
         public void FieldUpdate(Cell cell)
         {
-            string sql = "Exec dbo.prCellUpdate @X, @Y, @Man, @SaveId";
+            string sql = "Exec dbo.prCellUpdate @X, @Y, @Man, @SaveId, @CityId, @CityName";
 
             using (var conn = new SqlConnection(connectionString))
             {
-                conn.Execute(sql, cell);
+                conn.Execute(sql, new { cell.X, cell.Y, cell.Man, cell.SaveId, CityId = cell.City?.Id, CityName = cell.City?.Name });
             }
         }
 

@@ -292,18 +292,19 @@ export default {
         },
 
         async loadGame(loadId) {
-            let flatArray = this.cellArray = [];
+            let flatArray = [];
             await MapService.getGameState(loadId)
-                .then(cellArray => {
-                    flatArray = cellArray;
+                .then(cells => {
+                    flatArray = cells;
                 });
 
-            for (let i = 0; i < 10; i++) {
-                this.cellArray.push([]);
-                for (let j = 0; j < 10; j++) {
-                    this.cellArray[i].push(flatArray.find(cell => cell.x == i && cell.y == j));
-                }
-            }
+            let biggestX = Math.max(...flatArray.map(o => o.x));
+            let biggestY = Math.max(...flatArray.map(o => o.y));
+            this.cellArray = [biggestX+1][biggestY+1];
+            this.flatArray.forEach(item => {
+                this.cellArray[item.x][item.y] = item;
+            });
+
         },
 
         loadGameState(loadId) {
