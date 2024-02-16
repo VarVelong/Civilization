@@ -1,14 +1,7 @@
 
 export default {
-    getVersion(){
-        return fetch("https://localhost:7058/Game/version", { method:"GET" })
-            .then(response => {
-                return response.json();
-            });
-    },
-
     saveGame(cells, saveType) {
-        return fetch("https://localhost:7058/Field/create", {
+        return fetch("https://localhost:7058/game/save", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -21,14 +14,14 @@ export default {
     },
 
     getSaves(){
-        return fetch("https://localhost:7058/save", { method:"GET" })
+        return fetch("https://localhost:7058/game/save", { method:"GET" })
             .then(response => {
                 return response.json();
             });
     },
 
     getGameState(saveId){
-        return fetch(`https://localhost:7058/field/get/${saveId}`, { method:"GET" })
+        return fetch(`https://localhost:7058/game/save/${saveId}`, { method:"GET" })
             .then(response => {
                 return response.json();
             });

@@ -7,52 +7,51 @@ using Civilization.Business.Models;
 namespace Civilization.Controllers
 {
     [ApiController]
-    [Route("Field")]
+    [Route("game")]
 
-    public class FieldController: ControllerBase
+    public class SaveController : ControllerBase
     {
         private IFieldService fieldService;
         private ISaveService saveService;
         private IMapper mapper;
 
-        public FieldController(IFieldService fieldService, ISaveService saveService, IMapper mapper)
+        public SaveController(IFieldService fieldService, ISaveService saveService, IMapper mapper)
         {
             this.fieldService = fieldService;
             this.saveService = saveService;
             this.mapper = mapper;
         } 
 
-        [HttpPost("create")]
-        public IActionResult Create(FieldCreateViewModel saveViewModel)
+        [HttpPost("save")]
+        public IActionResult Create(SaveCreateViewModel saveViewModel)
         {
-            fieldService.FieldAdd(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType));
-            return Ok(new { value = "dupa" });
+            var save = saveService.FieldAdd(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType));
+            return Ok(mapper.Map<SaveViewModel>(save));
         }
 
-        [HttpPatch("update")]
-        public IActionResult Update(FieldCreateViewModel saveViewModel)
+        [HttpPatch("save")]
+        public IActionResult Update(SaveUpdateViewModel saveViewModel)
         {
-            //add parameter save slot nullable
-            fieldService.FieldUpdate(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType), saveViewModel.SaveSlotNumber);
-            return Ok(new { value = "dupa" });
+            var save = saveService.FieldUpdate(mapper.Map<List<CellDto>>(saveViewModel.Cells), mapper.Map<SaveTypeDto>(saveViewModel.SaveType), saveViewModel.SaveSlotNumber);
+            return Ok(mapper.Map<SaveViewModel>(save));
         }
 
         //todo fix once front end is done
-        [HttpDelete("delete")]
+        [HttpDelete("save")]
         public IActionResult Delete(List<CellViewModel> cells)
         {
             //fieldService.FieldAdd(mapper.Map<List<CellDto>>(cells));
-            return Ok(new { value = "dupa" });
+            return Ok(new { value = "test" });
         }
 
-        [HttpGet("get/{saveId}")]        
+        [HttpGet("save/{saveId}")]        
         public IActionResult Get(int saveId)
         {
             var cells = fieldService.FieldGet(saveId);
             return Ok(mapper.Map<List<CellViewModel>>(cells));
         }
 
-        [HttpGet("/save")]
+        [HttpGet("save")]
         public IActionResult Get()
         {
             var cells = saveService.GetList();

@@ -22,13 +22,13 @@ namespace Civilization.Data
             }
         }
 
-        public void SaveUpdate(Save save)
+        public Save SaveUpdate(Save save)
         {
             string sql = "Exec dbo.prSaveUpdate @Id, @SavedOn";
 
             using (var conn = new SqlConnection(connectionString))
             {
-                conn.Execute(sql, save);
+                return conn.QueryFirstOrDefault<Save>(sql, save);
             }
         }
 

@@ -163,10 +163,6 @@ export default {
             this.cellArray[5][5].unit = new Unit(UnitType.Settler, "Jacek", 1);
         }
 
-
-        MapService.getVersion().then(version => {
-            this.print = version.value;
-        });
         this.fetchSaves();
     },
 

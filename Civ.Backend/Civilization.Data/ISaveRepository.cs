@@ -7,6 +7,6 @@ namespace Civilization.Data
         Save SaveAdd(Save save);
         void SaveDelete(int id);
         IEnumerable<Save> SaveGet();
-        void SaveUpdate(Save save);
+        Save SaveUpdate(Save save);
     }
 }
