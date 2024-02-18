@@ -1,6 +1,6 @@
 
 export default {
-    saveGame(cells, saveType) {
+    createSave(cells, saveType) {
         return fetch("https://localhost:7058/game/save", {
             method: "POST",
             headers: {
@@ -8,6 +8,19 @@ export default {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({cells:cells, saveType:saveType})})
+            .then(response => {
+                return response.json();
+            });
+    },
+
+    updateSave(cells, saveType, slotNumber) {
+        return fetch("https://localhost:7058/game/save", {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({cells:cells, saveType:saveType, saveSlotNumber:slotNumber})})
             .then(response => {
                 return response.json();
             });

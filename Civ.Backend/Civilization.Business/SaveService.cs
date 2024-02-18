@@ -2,6 +2,7 @@
 using Civilization.Business.Models;
 using Civilization.Data;
 using Civilization.Data.Models;
+using System.Linq;
 
 namespace Civilization.Business
 {
@@ -31,6 +32,7 @@ namespace Civilization.Business
 
         public SaveDto FieldAdd(List<CellDto> cells, SaveTypeDto saveType)
         {
+            var a = saveRepository.SaveGet();
             switch (saveType)
             {
                 case SaveTypeDto.UserSave:

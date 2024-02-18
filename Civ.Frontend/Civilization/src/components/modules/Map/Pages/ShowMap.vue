@@ -33,7 +33,7 @@
                 <button @click="saveGame">
                     Save
                 </button>
-                <button @click="modal.load = true">
+                <button @click="isSaving = false; modal.load = true">
                     Load
                 </button>
             </div>
@@ -48,7 +48,7 @@
     
         </CityModal> -->
         <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit"></HeroScreenModal>
-        <game-load-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGameState"></game-load-modal>
+        <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false" @selected="loadGameState"></game-saves-modal>
     </div>
 </template>
 
@@ -125,7 +125,7 @@
 import MapService from '../MapService';
 import ActionMenu from '../Components/ActionMenu.vue';
 import CityModal from '../Components/CityModal.vue';
-import GameLoadModal from '../../../modals/GameLoadModal.vue'
+import GameSavesModal from '../../../modals/GameSavesModal.vue'
 import HeroScreenModal from '../Components/HeroScreenModal.vue'
 import Unit from '../Models/Unit.js'
 import UnitType from '../Enums/UnitType.js'
@@ -142,10 +142,12 @@ export default {
             selectedCity: null,
             fieldSize: 10,
             modal: {
-                load: false,
+                saves: false,
                 city: false,
                 heroScreen: false
-            }
+            },
+            maxSaveNumber: 5,
+            isSaving: false
         }
     },
 
@@ -169,7 +171,7 @@ export default {
     components: {
         ActionMenu,
         CityModal,
-        GameLoadModal,
+        GameSavesModal,
         HeroScreenModal
     },
 
@@ -184,13 +186,23 @@ export default {
             }
             return cellArray;
         },
+
         saveGame() {
+            //test this, test modal on save and load, change modal button, fix field
             let saveGameData = this.getSaveGameData();
-            MapService.saveGame(saveGameData, SaveType.UserSave).then(version => {
-                alert("Game Saved");
-                this.fetchSaves();
-            });
+            if (this.saves.length <= this.maxSaveNumber) {
+                MapService.createSave(saveGameData, SaveType.UserSave).then(save => {
+                    debugger
+                    alert("Game Saved");
+                    this.fetchSaves();
+                }); 
+            }
+            else {
+                this.isSaving = true;
+                this.modal.saves = true;
+            }
         },
+
         saveState(){
             let saveGameData = this.getSaveGameData();
             MapService.saveGame(saveGameData, SaveType.SaveState).then(version => {
@@ -304,7 +316,7 @@ export default {
         },
 
         loadGameState(loadId) {
-            this.modal.load = false;
+            this.modal.saves = false;
             this.$router.push({ name: 'game', params: { id: loadId } });
             this.loadGame(loadId);
         }

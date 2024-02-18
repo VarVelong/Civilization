@@ -1,6 +1,12 @@
 <template>
     <Modal :modalActive="open">
         <div>
+            <h1 v-if="isSaving">
+                Choose a save slot:
+            </h1>
+            <h1 v-else>
+                Choose which game to load:
+            </h1>
             <ul>
                 <li v-for="save in saves" :class="save.id == selectedId ? 'selected' : ''" @click="selectedId = save.id"> 
                     {{save.id}} saved on {{dateTime(save.savedOn).format('DD/MM/YYYY hh:mm')}} 
@@ -71,6 +77,11 @@ export default {
             type: Boolean,
             required: true
         },
+        isSaving: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     },
 
     components: {

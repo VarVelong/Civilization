@@ -4,14 +4,14 @@
             <button @click="$router.push('game')">
                 New Game
             </button>
-            <button @click="modal.load = true">
+            <button @click="modal.saves = true">
                 Load Game
             </button>
             <button>
                 Options
             </button>
         </div>
-        <game-load-modal :open="modal.load" @close="modal.load = false" @selectedId="loadGame"></game-load-modal>    
+        <game-saves-modal :open="modal.saves" @close="modal.saves = false" @selected="loadGame"></game-saves-modal>    
     </container>
 </template>
 
@@ -34,24 +34,24 @@
 </style>
 
 <script>
-import GameLoadModal from '../../modals/GameLoadModal.vue'
+import GameSavesModal from '../../modals/GameSavesModal.vue'
 
 export default {
     data() {
         return {
             modal:{
-                load:false
+                saves:false
             }
         }
     },
     
     components: {
-        GameLoadModal
+        GameSavesModal
     },
 
     methods: {
         loadGame(loadId){
-            this.modal.load = false;
+            this.modal.saves = false;
             this.$router.push({name:'game', params: {id:loadId}});
         }
     }
