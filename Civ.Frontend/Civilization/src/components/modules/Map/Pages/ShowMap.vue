@@ -1,6 +1,6 @@
 <template>
     <div id="page">
-        <div id="wrapper" class="container-fluid">
+        <div id="wrapper" class="container-fluid">s
             <div class="row">
                 <div id="gameArea" class="col-lg-9 col-md-8 col-sm-6">
                     <table id="gameBoard" @mouseleave="cleanPath">
@@ -44,10 +44,8 @@
             </div>
         </div>
 
-        <!-- <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit">
-    
-        </CityModal> -->
-        <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit"></HeroScreenModal>
+        <!-- <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit"></CityModal> -->
+        <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit" @close="modal.heroScreen = false"></HeroScreenModal>
         <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false" @selected="loadGameState"></game-saves-modal>
     </div>
 </template>
@@ -106,14 +104,14 @@
     float: left;
 }
 
+#bottomMenu {
+    clear: both;
+} */
+
 #actionMenu {
     width: 250px;
     float: left;
 }
-
-#bottomMenu {
-    clear: both;
-} */
 
 #gameBoard td img {
     max-width: 75px;
@@ -264,14 +262,19 @@ export default {
         },
 
         moveUnit(e, verse, column) {
-            this.selectedCell.unit = false;
-            this.cellArray[verse][column].unit = true;
-            this.selectedCell = null;
-            e.preventDefault();
+            if (this.selectedCell.unit) {
+                this.selectedCell.unit = false;
+                this.cellArray[verse][column].unit = true;
+                this.selectedCell = null;
+                e.preventDefault();
+            }
+            else {
+                alert("No unit to move.")
+            }
         },
 
         onCellDoubleClick(verse, column) {
-            this.selectedCell = this.cellArray[verse][column];
+            this.selectedCell == this.cellArray[verse][column];
             if (this.selectedCell.city) {
                 this.saveState();
                 this.$router.push({ name: 'city', params: { id: this.selectedCell.city.name } });

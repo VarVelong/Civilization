@@ -2,9 +2,8 @@
     <div>
         <ul>
             <li @click="createCity">Create City</li>
-            <li>Move</li>
             <li>Attack</li>
-            <li>Delete Unit</li>
+            <li @click="deleteUnit">Delete Unit</li>
         </ul>
     </div>
 </template>
@@ -46,9 +45,16 @@ export default {
         createCity(){
             let cityName = prompt("Name your city")
             this.activeCell.city = {name: cityName};
-            this.activeCell.man = 0;
+            this.activeCell.unit = 0;
             this.$emit("cellUpdated", this.activeCell, true);
         },
+
+        deleteUnit() {
+            let question = confirm("Are you sure you want to delete this unit?")
+            if (question) {
+                this.activeCell.unit = 0;
+            }
+        }
     }
 }
 
