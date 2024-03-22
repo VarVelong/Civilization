@@ -7,8 +7,8 @@
                         <tr v-for="col in cellArray">
                             <td v-for="square in col" :title="`${square.x}-${square.y}`"
                                 @click="selectSquare(square.x, square.y)"
-                                :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)"
-                                @contextmenu="moveUnit($event, square.x, square.y)"
+                                :class="square === selectedCell ? 'selected grass' : 'grass'"
+                                @mouseover="cellHover(square)" @contextmenu="moveUnit($event, square.x, square.y)"
                                 @dblclick="onCellDoubleClick(square.x, square.y)">
                                 <img v-if="square.unit" src="../../../../assets/Images/MAN.png" />
                                 <img v-if="square.city" src="../../../../assets/Images/baseIcon.png"
@@ -19,34 +19,36 @@
                     </table>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                <!-- v-show="selectedCell && selectedCell.unit" -->
-                <ActionMenu id="actionMenu" :activeCell="selectedCell"
-                    @cellUpdated="updateCell" />
-            </div>
+                    <!-- v-show="selectedCell && selectedCell.unit" -->
+                    <ActionMenu id="actionMenu" :activeCell="selectedCell" @cellUpdated="updateCell" />
+                    <div id="bottomMenu">
+                        <div>
+                            <button @click="saveGame">
+                                Save
+                            </button>
+                            <button @click="isSaving = false; modal.load = true">
+                                Load
+                            </button>
+                        </div>
+                        <div>
+                            <button @click="onExit">
+                                Leave to menu
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        
 
-        <div id="bottomMenu">
-            <div>
-                <button @click="saveGame">
-                    Save
-                </button>
-                <button @click="isSaving = false; modal.load = true">
-                    Load
-                </button>
-            </div>
-            <div>
-                <button @click="onExit">
-                    Leave to menu
-                </button>
-            </div>
-        </div>
+
+
 
         <!-- <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit"></CityModal> -->
-        <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit" @close="modal.heroScreen = false"></HeroScreenModal>
-        <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false" @selected="loadGameState"></game-saves-modal>
+        <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit" @close="modal.heroScreen = false">
+        </HeroScreenModal>
+        <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false"
+            @selected="loadGameState"></game-saves-modal>
     </div>
 </template>
 
@@ -117,6 +119,10 @@
     max-width: 75px;
     max-height: 75px;
 }
+
+.row {
+    width: max-content;
+}
 </style>
 
 <script>
@@ -173,6 +179,12 @@ export default {
         HeroScreenModal
     },
 
+    computed: {
+        saveStateComp() {
+            return this.saves.filter(s => s.saveType == 3);
+        }
+    },
+
     methods: {
         getSaveGameData() {
             let cellArray = [];
@@ -193,7 +205,7 @@ export default {
                     debugger
                     alert("Game Saved");
                     this.fetchSaves();
-                }); 
+                });
             }
             else {
                 this.isSaving = true;
@@ -201,12 +213,22 @@ export default {
             }
         },
 
-        saveState(){
+        saveState() {
+            debugger
             let saveGameData = this.getSaveGameData();
-            MapService.saveGame(saveGameData, SaveType.SaveState).then(version => {
-                alert("Game Saved");
-                this.fetchSaves();
-            });
+            if (this.saveStateComp.length > 0) {
+                MapService.updateSave(saveGameData, SaveType.SaveState).then(version => {
+                    alert("Game Saved");
+                    this.fetchSaves();
+                });
+            }
+            else {
+                MapService.createSave(saveGameData, SaveType.SaveState).then(version => {
+                    alert("Game Saved");
+                    this.fetchSaves();
+                });
+            }
+
         },
 
         cleanPath() {
@@ -274,7 +296,8 @@ export default {
         },
 
         onCellDoubleClick(verse, column) {
-            this.selectedCell == this.cellArray[verse][column];
+            this.selectedCell = this.cellArray[verse][column];
+            debugger
             if (this.selectedCell.city) {
                 this.saveState();
                 this.$router.push({ name: 'city', params: { id: this.selectedCell.city.name } });
@@ -311,7 +334,7 @@ export default {
 
             let biggestX = Math.max(...flatArray.map(o => o.x));
             let biggestY = Math.max(...flatArray.map(o => o.y));
-            this.cellArray = [biggestX+1][biggestY+1];
+            this.cellArray = [biggestX + 1][biggestY + 1];
             this.flatArray.forEach(item => {
                 this.cellArray[item.x][item.y] = item;
             });

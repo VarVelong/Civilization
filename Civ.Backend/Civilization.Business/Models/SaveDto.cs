@@ -4,5 +4,7 @@
     {
         public int Id { get; set; }
         public DateTime SavedOn { get; set; }
+        
+        public SaveTypeDto SaveType { get; set; }
     }
 }

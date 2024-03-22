@@ -27,12 +27,31 @@ namespace Civilization.Business
         public IEnumerable<SaveDto> GetList()
         {
             var result = saveRepository.SaveGet();
-            return mapper.Map<List<SaveDto>>(result);
+            var saveDtoResults = mapper.Map<List<SaveDto>>(result);
+
+            foreach (var saveDtoResult in saveDtoResults)
+            {
+                switch (saveDtoResult.Id)
+                {
+                    case saveStateSlotId:
+                        saveDtoResult.SaveType = SaveTypeDto.SaveState;
+                        break;
+
+                    case int when (saveDtoResult.Id >= minIdForAutoSaves && saveDtoResult.Id <= maxIdForAutoSaves):
+                        saveDtoResult.SaveType = SaveTypeDto.AutoSave;
+                        break;
+
+                    default:
+                        saveDtoResult.SaveType = SaveTypeDto.UserSave;
+                        break;
+                }
+            }
+
+            return saveDtoResults;
         }
 
         public SaveDto FieldAdd(List<CellDto> cells, SaveTypeDto saveType)
         {
-            var a = saveRepository.SaveGet();
             switch (saveType)
             {
                 case SaveTypeDto.UserSave:
