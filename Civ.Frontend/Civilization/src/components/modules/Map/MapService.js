@@ -7,7 +7,8 @@ export default {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({cells:cells, saveType:saveType})})
+            body: JSON.stringify({ cells: cells, saveType: saveType })
+        })
             .then(response => {
                 return response.json();
             });
@@ -20,21 +21,22 @@ export default {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({cells:cells, saveType:saveType, saveSlotNumber:slotNumber})})
+            body: JSON.stringify({ cells: cells, saveType: saveType, saveSlotNumber: slotNumber })
+        })
             .then(response => {
                 return response.json();
             });
     },
 
-    getSaves(){
-        return fetch("https://localhost:7058/game/save", { method:"GET" })
+    getSaves() {
+        return fetch("https://localhost:7058/game/save", { method: "GET" })
             .then(response => {
                 return response.json();
             });
     },
 
-    getGameState(saveId){
-        return fetch(`https://localhost:7058/game/save/${saveId}`, { method:"GET" })
+    loadGame(saveId) {
+        return fetch(`https://localhost:7058/game/save/${saveId}`, { method: "GET" })
             .then(response => {
                 return response.json();
             });

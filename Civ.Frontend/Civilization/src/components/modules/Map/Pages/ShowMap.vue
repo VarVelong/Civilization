@@ -48,7 +48,7 @@
         <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit" @close="modal.heroScreen = false">
         </HeroScreenModal>
         <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false"
-            @selected="loadGameState"></game-saves-modal>
+            @selected="onSaveSelected"></game-saves-modal>
     </div>
 </template>
 
@@ -148,7 +148,8 @@ export default {
             modal: {
                 saves: false,
                 city: false,
-                heroScreen: false
+                heroScreen: false,
+                load: false
             },
             maxSaveNumber: 5,
             isSaving: false
@@ -159,6 +160,10 @@ export default {
         if (this.$route.params.id) {
             await this.loadGame(this.$route.params.id);
         }
+        // WORK ON SAVE STATE LOADING
+        // else if (this.$route.params.from) {
+        //     await this.loa
+        // }
         else {
             for (let i = 0; i < this.fieldSize; i++) {
                 this.cellArray.push([]);
@@ -327,7 +332,7 @@ export default {
 
         async loadGame(loadId) {
             let flatArray = [];
-            await MapService.getGameState(loadId)
+            await MapService.loadGame(loadId)
                 .then(cells => {
                     flatArray = cells;
                 });
@@ -341,7 +346,8 @@ export default {
 
         },
 
-        loadGameState(loadId) {
+        // WORK ON LOADING GAME BEFORE TOUCHING HIS
+        onSaveSelected() {
             this.modal.saves = false;
             this.$router.push({ name: 'game', params: { id: loadId } });
             this.loadGame(loadId);

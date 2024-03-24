@@ -7,9 +7,8 @@
         <img v-if="barracks.length > 1" src="../../../../assets/Images/barracks.png" title="Barracks" @click="openBarracks" /> -->
         <barracks-modal :open="modal.barracks" @close="modal.barracks = false"></barracks-modal>
         <tavern-modal :open="modal.tavern" @close="modal.tavern = false"></tavern-modal>
+        
         <div id="city-grid" class="container-fluid">
-
-            <!-- TO DO!!! INSERT A PROPER BUILDING INTO RESPECTIVE CELL (photo on phone)-->
 
             <div class="row">
                 <div :class="barracksThree ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
@@ -25,6 +24,7 @@
                     <img src="../../../../assets/Images/B6.png" title="Barracks6" @click="openBarracks" />
                 </div>
             </div>
+
             <div class="row">
                 <div :class="barracksOne ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
                     <img src="../../../../assets/Images/B1.png" title="Barracks1" @click="openBarracks"/>
@@ -39,6 +39,7 @@
                     <img src="../../../../assets/Images/B2.png" title="Barracks2" @click="openBarracks" />
                 </div>
             </div>
+
             <div class="row">
                 <div :class="unknownOne ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
                     <img src="../../../../assets/Images/Unknown.png" title="Unknown"/>
@@ -55,6 +56,7 @@
             </div>
         </div>
         <button @click="returnToMap" id="returnButton"> RETURN </button>
+
     </div>
 </template>
 
@@ -144,7 +146,7 @@ export default {
         },
 
         returnToMap() {
-            this.$router.push({ name: 'game', params: { id: 1 } });
+            this.$router.push({ name: 'game', params: { from: "city" } });
             //find a way to pass all the date about city back
         },
 

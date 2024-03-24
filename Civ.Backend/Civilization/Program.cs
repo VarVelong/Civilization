@@ -13,6 +13,8 @@ namespace Civilization
             builder.Services.AddScoped<ISaveService, SaveService>();
             builder.Services.AddScoped<IFieldRepository, FieldRepository>();
             builder.Services.AddScoped<ISaveRepository, SaveRepository>();
+            builder.Services.AddScoped<ICityRepository, CityRepository>();
+            builder.Services.AddScoped<ICityService, CityService>();
 
             builder.Services.AddMapping();
 
