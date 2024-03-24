@@ -7,7 +7,7 @@
         <img v-if="barracks.length > 1" src="../../../../assets/Images/barracks.png" title="Barracks" @click="openBarracks" /> -->
         <barracks-modal :open="modal.barracks" @close="modal.barracks = false"></barracks-modal>
         <tavern-modal :open="modal.tavern" @close="modal.tavern = false"></tavern-modal>
-        
+
         <div id="city-grid" class="container-fluid">
 
             <div class="row">
@@ -27,13 +27,13 @@
 
             <div class="row">
                 <div :class="barracksOne ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
-                    <img src="../../../../assets/Images/B1.png" title="Barracks1" @click="openBarracks"/>
+                    <img src="../../../../assets/Images/B1.png" title="Barracks1" @click="openBarracks" />
                 </div>
                 <div :class="cityHall ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
-                    <img src="../../../../assets/Images/CityHall.png" title="City Hall"/>
+                    <img src="../../../../assets/Images/CityHall.png" title="City Hall" />
                 </div>
                 <div :class="tavern ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
-                    <img src="../../../../assets/Images/Tavern.png" title="Tavern" @click="modal.tavern = true"/>
+                    <img src="../../../../assets/Images/Tavern.png" title="Tavern" @click="modal.tavern = true" />
                 </div>
                 <div :class="barracksTwo ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
                     <img src="../../../../assets/Images/B2.png" title="Barracks2" @click="openBarracks" />
@@ -42,16 +42,16 @@
 
             <div class="row">
                 <div :class="unknownOne ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
-                    <img src="../../../../assets/Images/Unknown.png" title="Unknown"/>
+                    <img src="../../../../assets/Images/Unknown.png" title="Unknown" />
                 </div>
                 <div :class="magicTower ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
-                    <img src="../../../../assets/Images/MagicTower.png" title="Magic Tower"/>
+                    <img src="../../../../assets/Images/MagicTower.png" title="Magic Tower" />
                 </div>
                 <div :class="market ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
-                    <img src="../../../../assets/Images/Market.png" title="Market"/>
+                    <img src="../../../../assets/Images/Market.png" title="Market" />
                 </div>
                 <div :class="unknownTwo ? 'col-lg-3 col-md-3 col-sm-6' : 'disabled col-lg-3 col-md-3 col-sm-6'">
-                    <img src="../../../../assets/Images/Unknown.png" title="Unknown"/>
+                    <img src="../../../../assets/Images/Unknown.png" title="Unknown" />
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
 
 
 <style scoped>
-#city-grid img{
+#city-grid img {
     height: 75%;
     width: 75%;
 }
@@ -73,7 +73,7 @@
     height: 100vh;
 }
 
-div.disabled img{
+div.disabled img {
     opacity: 0.5;
 }
 
@@ -146,7 +146,7 @@ export default {
         },
 
         returnToMap() {
-            this.$router.push({ name: 'game', params: { from: "city" } });
+            this.$router.push({ name: 'game', params: { id: -1 } });
             //find a way to pass all the date about city back
         },
 

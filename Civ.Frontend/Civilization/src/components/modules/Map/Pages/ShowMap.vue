@@ -26,7 +26,7 @@
                             <button @click="saveGame">
                                 Save
                             </button>
-                            <button @click="isSaving = false; modal.load = true">
+                            <button @click="isSaving = false; modal.saves = true">
                                 Load
                             </button>
                         </div>
@@ -48,7 +48,7 @@
         <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit" @close="modal.heroScreen = false">
         </HeroScreenModal>
         <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false"
-            @selected="onSaveSelected"></game-saves-modal>
+            @selectedId="onSaveSelected"></game-saves-modal>
     </div>
 </template>
 
@@ -148,8 +148,7 @@ export default {
             modal: {
                 saves: false,
                 city: false,
-                heroScreen: false,
-                load: false
+                heroScreen: false
             },
             maxSaveNumber: 5,
             isSaving: false
@@ -157,13 +156,11 @@ export default {
     },
 
     async mounted() {
+        await this.fetchSaves();
+        debugger;
         if (this.$route.params.id) {
-            await this.loadGame(this.$route.params.id);
+            await this.loadGame(this.$route.params.id > 0 ? this.$route.params.id : this.saveStateComp.id);
         }
-        // WORK ON SAVE STATE LOADING
-        // else if (this.$route.params.from) {
-        //     await this.loa
-        // }
         else {
             for (let i = 0; i < this.fieldSize; i++) {
                 this.cellArray.push([]);
@@ -173,8 +170,6 @@ export default {
             }
             this.cellArray[5][5].unit = new Unit(UnitType.Settler, "Jacek", 1);
         }
-
-        this.fetchSaves();
     },
 
     components: {
@@ -186,7 +181,7 @@ export default {
 
     computed: {
         saveStateComp() {
-            return this.saves.filter(s => s.saveType == 3);
+            return this.saves.find(s => s.saveType == 3);
         }
     },
 
@@ -219,9 +214,8 @@ export default {
         },
 
         saveState() {
-            debugger
             let saveGameData = this.getSaveGameData();
-            if (this.saveStateComp.length > 0) {
+            if (this.saveStateComp) {
                 MapService.updateSave(saveGameData, SaveType.SaveState).then(version => {
                     alert("Game Saved");
                     this.fetchSaves();
@@ -233,7 +227,6 @@ export default {
                     this.fetchSaves();
                 });
             }
-
         },
 
         cleanPath() {
@@ -266,8 +259,8 @@ export default {
             }
         },
 
-        fetchSaves() {
-            MapService.getSaves().then(saves => {
+        async fetchSaves() {
+            await MapService.getSaves().then(saves => {
                 this.saves = saves;
                 if (saves) {
                     this.newSaveId = saves.length + 1;
@@ -302,7 +295,6 @@ export default {
 
         onCellDoubleClick(verse, column) {
             this.selectedCell = this.cellArray[verse][column];
-            debugger
             if (this.selectedCell.city) {
                 this.saveState();
                 this.$router.push({ name: 'city', params: { id: this.selectedCell.city.name } });
@@ -331,6 +323,7 @@ export default {
         },
 
         async loadGame(loadId) {
+            debugger;
             let flatArray = [];
             await MapService.loadGame(loadId)
                 .then(cells => {
@@ -339,18 +332,15 @@ export default {
 
             let biggestX = Math.max(...flatArray.map(o => o.x));
             let biggestY = Math.max(...flatArray.map(o => o.y));
-            this.cellArray = [biggestX + 1][biggestY + 1];
-            this.flatArray.forEach(item => {
+            this.cellArray = [...Array(biggestX + 1)].map(e => Array(biggestY + 1));
+            flatArray.forEach(item => {
                 this.cellArray[item.x][item.y] = item;
             });
-
         },
 
-        // WORK ON LOADING GAME BEFORE TOUCHING HIS
-        onSaveSelected() {
+        onSaveSelected(loadId) {
             this.modal.saves = false;
-            this.$router.push({ name: 'game', params: { id: loadId } });
-            this.loadGame(loadId);
+            this.$router.go('game', { id: loadId });
         }
     }
 }
