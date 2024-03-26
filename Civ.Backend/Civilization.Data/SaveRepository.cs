@@ -4,19 +4,13 @@ using System.Data.SqlClient;
 
 namespace Civilization.Data
 {
-    public class SaveRepository : ISaveRepository
+    public class SaveRepository : BaseRepository, ISaveRepository
     {
-        private string connectionString;
-        public SaveRepository()
-        {
-            connectionString = @"Data Source=VarVelongLaptop\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
-        }
-
         public Save SaveAdd(Save save)
         {
             string sql = "Exec dbo.prSaveInsert @Id, @SavedOn";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 return conn.QueryFirstOrDefault<Save>(sql, save);
             }
@@ -26,7 +20,7 @@ namespace Civilization.Data
         {
             string sql = "Exec dbo.prSaveUpdate @Id, @SavedOn";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 return conn.QueryFirstOrDefault<Save>(sql, save);
             }
@@ -36,7 +30,7 @@ namespace Civilization.Data
         {
             string sql = "Exec dbo.prSaveDelete @id";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 conn.Execute(sql, new { id });
             }
@@ -46,7 +40,7 @@ namespace Civilization.Data
         {
             string sql = "Exec dbo.prSaveSelect";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 return conn.Query<Save>(sql);
             }

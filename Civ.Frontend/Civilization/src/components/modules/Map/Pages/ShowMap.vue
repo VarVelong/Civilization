@@ -18,9 +18,9 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
+                <div id="actionMenu" class="col-lg-3 col-md-4 col-sm-6">
                     <!-- v-show="selectedCell && selectedCell.unit" -->
-                    <ActionMenu id="actionMenu" :activeCell="selectedCell" @cellUpdated="updateCell" />
+                    <ActionMenu  :activeCell="selectedCell" @cellUpdated="updateCell" />
                     <div id="bottomMenu">
                         <div>
                             <button @click="saveGame">
@@ -53,10 +53,13 @@
 </template>
 
 <style>
-/* #page {
-    margin: auto;
-    margin-top: 20px;
-} */
+
+
+#page {
+    height: 1080px;
+    width: 1920px;
+    background-color: grey;
+} 
 
 #gameBoard,
 #gameBoard tr,
@@ -88,6 +91,7 @@
     font-size: 32px;
     padding: 5px;
     margin: 5px;
+    align-items: flex-end;
 }
 
 #bottomMenu div:first-child {
@@ -113,6 +117,8 @@
 #actionMenu {
     width: 250px;
     float: left;
+    background-color: rgb(75, 75, 75);
+    align-items: center;
 }
 
 #gameBoard td img {

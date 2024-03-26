@@ -4,19 +4,13 @@ using System.Data.SqlClient;
 
 namespace Civilization.Data
 {
-    public class FieldRepository : IFieldRepository
+    public class FieldRepository : BaseRepository, IFieldRepository
     {
-        private string connectionString;
-        public FieldRepository()
-        {
-            connectionString = @"Data Source=VarVelongLaptop\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";
-        }
-
         public void FieldAdd(Cell cell)
         {
             string sql = "Exec dbo.prCellInsert @X, @Y, @Man, @SaveId, @CityName";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 conn.Execute(sql, new { cell.X, cell.Y, cell.Man, cell.SaveId, CityName = cell.City?.Name });
             }
@@ -26,7 +20,7 @@ namespace Civilization.Data
         {
             string sql = "Exec dbo.prCellUpdate @X, @Y, @Man, @SaveId, @CityId, @CityName";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 conn.Execute(sql, new { cell.X, cell.Y, cell.Man, cell.SaveId, CityId = cell.City?.Id, CityName = cell.City?.Name });
             }
@@ -36,7 +30,7 @@ namespace Civilization.Data
         {
             string sql = "Exec dbo.prCellDelete @X, @Y";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 conn.Execute(sql, new { x, y });
             }
@@ -46,7 +40,7 @@ namespace Civilization.Data
         {
             string sql = "Exec dbo.prCellSelect @saveGameId";
 
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(databaseConnection))
             {
                 return conn.Query<CellSummary>(sql, new { saveGameId });
             }
