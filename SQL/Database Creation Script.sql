@@ -1,80 +1,6 @@
-USE [master]
-GO
-/****** Object:  Database [Civilization]    Script Date: 18.02.2024 23:54:15 ******/
-CREATE DATABASE [Civilization]
-GO
-ALTER DATABASE [Civilization] SET COMPATIBILITY_LEVEL = 150
-GO
-IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
-EXEC [Civilization].[dbo].[sp_fulltext_database] @action = 'enable'
-end
-GO
-ALTER DATABASE [Civilization] SET ANSI_NULL_DEFAULT OFF 
-GO
-ALTER DATABASE [Civilization] SET ANSI_NULLS OFF 
-GO
-ALTER DATABASE [Civilization] SET ANSI_PADDING OFF 
-GO
-ALTER DATABASE [Civilization] SET ANSI_WARNINGS OFF 
-GO
-ALTER DATABASE [Civilization] SET ARITHABORT OFF 
-GO
-ALTER DATABASE [Civilization] SET AUTO_CLOSE ON 
-GO
-ALTER DATABASE [Civilization] SET AUTO_SHRINK OFF 
-GO
-ALTER DATABASE [Civilization] SET AUTO_UPDATE_STATISTICS ON 
-GO
-ALTER DATABASE [Civilization] SET CURSOR_CLOSE_ON_COMMIT OFF 
-GO
-ALTER DATABASE [Civilization] SET CURSOR_DEFAULT  GLOBAL 
-GO
-ALTER DATABASE [Civilization] SET CONCAT_NULL_YIELDS_NULL OFF 
-GO
-ALTER DATABASE [Civilization] SET NUMERIC_ROUNDABORT OFF 
-GO
-ALTER DATABASE [Civilization] SET QUOTED_IDENTIFIER OFF 
-GO
-ALTER DATABASE [Civilization] SET RECURSIVE_TRIGGERS OFF 
-GO
-ALTER DATABASE [Civilization] SET  ENABLE_BROKER 
-GO
-ALTER DATABASE [Civilization] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
-GO
-ALTER DATABASE [Civilization] SET DATE_CORRELATION_OPTIMIZATION OFF 
-GO
-ALTER DATABASE [Civilization] SET TRUSTWORTHY OFF 
-GO
-ALTER DATABASE [Civilization] SET ALLOW_SNAPSHOT_ISOLATION OFF 
-GO
-ALTER DATABASE [Civilization] SET PARAMETERIZATION SIMPLE 
-GO
-ALTER DATABASE [Civilization] SET READ_COMMITTED_SNAPSHOT OFF 
-GO
-ALTER DATABASE [Civilization] SET HONOR_BROKER_PRIORITY OFF 
-GO
-ALTER DATABASE [Civilization] SET RECOVERY SIMPLE 
-GO
-ALTER DATABASE [Civilization] SET  MULTI_USER 
-GO
-ALTER DATABASE [Civilization] SET PAGE_VERIFY CHECKSUM  
-GO
-ALTER DATABASE [Civilization] SET DB_CHAINING OFF 
-GO
-ALTER DATABASE [Civilization] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
-GO
-ALTER DATABASE [Civilization] SET TARGET_RECOVERY_TIME = 60 SECONDS 
-GO
-ALTER DATABASE [Civilization] SET DELAYED_DURABILITY = DISABLED 
-GO
-ALTER DATABASE [Civilization] SET ACCELERATED_DATABASE_RECOVERY = OFF  
-GO
-ALTER DATABASE [Civilization] SET QUERY_STORE = OFF
-GO
 USE [Civilization]
 GO
-/****** Object:  Table [dbo].[Cell]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  Table [dbo].[Cell]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -93,7 +19,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[City]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  Table [dbo].[City]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -101,13 +27,25 @@ GO
 CREATE TABLE [dbo].[City](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](16) NOT NULL,
+	[CityHall] [bit] NOT NULL,
+	[MagicTower] [bit] NOT NULL,
+	[Tavern] [bit] NOT NULL,
+	[Market] [bit] NOT NULL,
+	[UnknownOne] [bit] NOT NULL,
+	[UnknownTwo] [bit] NOT NULL,
+	[BarracksOne] [bit] NOT NULL,
+	[BarracksTwo] [bit] NOT NULL,
+	[BarracksThree] [bit] NOT NULL,
+	[BarracksFour] [bit] NOT NULL,
+	[BarracksFive] [bit] NOT NULL,
+	[BarracksSix] [bit] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Save]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  Table [dbo].[Save]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -121,13 +59,37 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((1)) FOR [CityHall]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [MagicTower]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [Tavern]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [Market]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [UnknownOne]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [UnknownTwo]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [BarracksOne]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [BarracksTwo]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [BarracksThree]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [BarracksFour]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [BarracksFive]
+GO
+ALTER TABLE [dbo].[City] ADD  DEFAULT ((0)) FOR [BarracksSix]
+GO
 ALTER TABLE [dbo].[Cell]  WITH CHECK ADD FOREIGN KEY([CityId])
 REFERENCES [dbo].[City] ([Id])
 GO
 ALTER TABLE [dbo].[Cell]  WITH CHECK ADD FOREIGN KEY([SaveId])
 REFERENCES [dbo].[Save] ([Id])
 GO
-/****** Object:  StoredProcedure [dbo].[prCellDelete]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prCellDelete]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -144,7 +106,7 @@ BEGIN TRAN
 
 COMMIT
 GO
-/****** Object:  StoredProcedure [dbo].[prCellInsert]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prCellInsert]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -177,7 +139,7 @@ BEGIN TRAN
 
 COMMIT
 GO
-/****** Object:  StoredProcedure [dbo].[prCellSelect]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prCellSelect]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -195,7 +157,7 @@ BEGIN TRAN
 
 COMMIT
 GO
-/****** Object:  StoredProcedure [dbo].[prCellUpdate]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prCellUpdate]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -240,7 +202,49 @@ BEGIN TRAN
 
 COMMIT
 GO
-/****** Object:  StoredProcedure [dbo].[prSaveDelete]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prCityUpdate]    Script Date: 26.05.2024 19:55:27 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROC [dbo].[prCityUpdate]
+
+@Id int,
+@CityHall bit = 0, 
+@MagicTower bit = 0,
+@Tavern bit = 0,
+@Market bit = 0,
+@UnknownOne bit = 0,
+@UnknownTwo bit = 0,
+@BarracksOne bit = 0,
+@BarracksTwo bit = 0,
+@BarracksThree bit = 0,
+@BarracksFour bit = 0,
+@BarracksFive bit = 0,
+@BarracksSix bit = 0
+as
+
+BEGIN TRAN
+
+	UPDATE dbo.City 
+	SET CityHall = @CityHall,
+		MagicTower = @MagicTower,
+		Tavern = @Tavern,
+		Market = @Market, 
+		UnknownOne	= @UnknownOne,
+		UnknownTwo	= @UnknownTwo,
+		BarracksOne = @BarracksOne,
+		BarracksTwo = @BarracksTwo,
+		BarracksThree = @BarracksThree,
+		BarracksFour = @BarracksFour,
+		BarracksFive = @BarracksFive,
+		BarracksSix	= @BarracksSix
+
+	WHERE Id = @Id
+
+COMMIT
+GO
+/****** Object:  StoredProcedure [dbo].[prSaveDelete]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -256,7 +260,7 @@ BEGIN TRAN
 
 COMMIT
 GO
-/****** Object:  StoredProcedure [dbo].[prSaveInsert]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prSaveInsert]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -276,7 +280,7 @@ BEGIN TRAN
 	WHERE Id = @Id;
 COMMIT
 GO
-/****** Object:  StoredProcedure [dbo].[prSaveSelect]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prSaveSelect]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -290,7 +294,7 @@ BEGIN TRAN
 
 COMMIT
 GO
-/****** Object:  StoredProcedure [dbo].[prSaveUpdate]    Script Date: 18.02.2024 23:54:15 ******/
+/****** Object:  StoredProcedure [dbo].[prSaveUpdate]    Script Date: 26.05.2024 19:55:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -310,8 +314,4 @@ BEGIN TRAN
 	FROM Civilization.dbo.[save]
 	WHERE Id = @Id;
 COMMIT
-GO
-USE [master]
-GO
-ALTER DATABASE [Civilization] SET  READ_WRITE 
 GO
