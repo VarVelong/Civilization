@@ -111,6 +111,7 @@ namespace Civilization.Business
         {
             foreach (var cell in cells)
             {
+                cell.SaveId = saveId;
                 fieldRepository.FieldUpdate(mapper.Map<Cell>(cell));
             }
 

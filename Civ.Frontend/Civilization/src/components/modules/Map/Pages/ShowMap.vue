@@ -1,6 +1,6 @@
 <template>
     <div id="page">
-        <div id="wrapper" class="container-fluid">s
+        <div id="wrapper" class="container-fluid">
             <div class="row">
                 <div id="gameArea" class="col-lg-9 col-md-8 col-sm-6">
                     <table id="gameBoard" @mouseleave="cleanPath">
