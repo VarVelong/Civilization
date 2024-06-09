@@ -18,48 +18,46 @@
                         </tr>
                     </table>
                 </div>
-                <div id="actionMenu" class="col-lg-3 col-md-4 col-sm-6">
-                    <!-- v-show="selectedCell && selectedCell.unit" -->
-                    <ActionMenu  :activeCell="selectedCell" @cellUpdated="updateCell" />
-                    <div id="bottomMenu">
-                        <div>
-                            <button @click="saveGame">
-                                Save
-                            </button>
-                            <button @click="isSaving = false; modal.saves = true">
-                                Load
-                            </button>
-                        </div>
-                        <div>
-                            <button @click="onExit">
-                                Leave to menu
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
+        <div id="actionMenu" class="col-lg-3 col-md-4 col-sm-6">
+            <ActionMenu :activeCell="selectedCell" @cellUpdated="updateCell" />
+            <div id="bottomMenu">
+                <div>
+                    <button @click="saveGame">
+                        Save
+                    </button>
+                    <button @click="isSaving = false; modal.saves = true">
+                        Load
+                    </button>
+                </div>
+                <div>
+                    <button @click="onExit">
+                        Leave to menu
+                    </button>
+                </div>
+            </div>
+            <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false"
+                @selectedId="onSaveSelected"></game-saves-modal>
+        </div>
 
-
-
-
-        <!-- <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit"></CityModal> -->
+        <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit"></CityModal>
         <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit" @close="modal.heroScreen = false">
         </HeroScreenModal>
-        <game-saves-modal :isSaving="isSaving" :open="modal.saves" @close="modal.saves = false"
-            @selectedId="onSaveSelected"></game-saves-modal>
     </div>
+
+
+
 </template>
 
 <style>
-
-
 #page {
-    height: 1080px;
-    width: 1920px;
     background-color: grey;
-} 
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
 
 #gameBoard,
 #gameBoard tr,
@@ -102,21 +100,12 @@
     float: right;
 }
 
-/* #wrapper {
-    width: max-content;
-} */
-
-/* #gameArea {
-    float: left;
+#wrapper {
+    flex-grow: 1;
 }
-
-#bottomMenu {
-    clear: both;
-} */
 
 #actionMenu {
     width: 250px;
-    float: left;
     background-color: rgb(75, 75, 75);
     align-items: center;
 }
@@ -127,7 +116,7 @@
 }
 
 .row {
-    width: max-content;
+    width: 100%;
 }
 </style>
 
@@ -150,7 +139,8 @@ export default {
             saves: null,
             selectedCell: null,
             selectedCity: null,
-            fieldSize: 10,
+            fieldSizeY: 20,
+            fieldSizeX: 10,
             modal: {
                 saves: false,
                 city: false,
@@ -163,14 +153,14 @@ export default {
 
     async mounted() {
         await this.fetchSaves();
-        debugger;
+
         if (this.$route.params.id) {
             await this.loadGame(this.$route.params.id > 0 ? this.$route.params.id : this.saveStateComp.id);
         }
         else {
-            for (let i = 0; i < this.fieldSize; i++) {
+            for (let i = 0; i < this.fieldSizeX; i++) {
                 this.cellArray.push([]);
-                for (let j = 0; j < this.fieldSize; j++) {
+                for (let j = 0; j < this.fieldSizeY; j++) {
                     this.cellArray[i].push({ x: i, y: j });
                 }
             }
@@ -208,7 +198,7 @@ export default {
             let saveGameData = this.getSaveGameData();
             if (this.saves.length <= this.maxSaveNumber) {
                 MapService.createSave(saveGameData, SaveType.UserSave).then(save => {
-                    debugger
+
                     alert("Game Saved");
                     this.fetchSaves();
                 });
@@ -329,7 +319,6 @@ export default {
         },
 
         async loadGame(loadId) {
-            debugger;
             let flatArray = [];
             await MapService.loadGame(loadId)
                 .then(cells => {

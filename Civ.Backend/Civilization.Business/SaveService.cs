@@ -2,7 +2,6 @@
 using Civilization.Business.Models;
 using Civilization.Data;
 using Civilization.Data.Models;
-using System.Linq;
 
 namespace Civilization.Business
 {
