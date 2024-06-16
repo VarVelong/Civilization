@@ -13,7 +13,8 @@ namespace Civilization.Data
         protected string databaseConnection;
         public BaseRepository() {
             //switching database connections between PC and Laptop
-            databaseConnection = @"Data Source=DIGIPC\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";//connectionStringLAP;
+            //databaseConnection = @"Data Source=DIGIPC\SQLEXPRESS;Initial Catalog=Civilization;Integrated Security=True";//connectionStringLAP;
+            databaseConnection = connectionStringLAP;
         }
     }
 }

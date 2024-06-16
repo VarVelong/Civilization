@@ -1,23 +1,21 @@
 <template>
     <div id="page">
-        <div id="wrapper" class="container-fluid">
+        <div id="gameArea" class="container-fluid">
             <div class="row">
-                <div id="gameArea" class="col-lg-9 col-md-8 col-sm-6">
-                    <table id="gameBoard" @mouseleave="cleanPath">
-                        <tr v-for="col in cellArray">
-                            <td v-for="square in col" :title="`${square.x}-${square.y}`"
-                                @click="selectSquare(square.x, square.y)"
-                                :class="square === selectedCell ? 'selected grass' : 'grass'"
-                                @mouseover="cellHover(square)" @contextmenu="moveUnit($event, square.x, square.y)"
-                                @dblclick="onCellDoubleClick(square.x, square.y)">
-                                <img v-if="square.unit" src="../../../../assets/Images/MAN.png" />
-                                <img v-if="square.city" src="../../../../assets/Images/baseIcon.png"
-                                    :title="square.city.name" />
-                                {{ square.movementCounter }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                <table id="gameBoard" @mouseleave="cleanPath">
+                    <tr v-for="col in cellArray">
+                        <td v-for="square in col" :title="`${square.x}-${square.y}`"
+                            @click="selectSquare(square.x, square.y)"
+                            :class="square === selectedCell ? 'selected grass' : 'grass'" @mouseover="cellHover(square)"
+                            @contextmenu="moveUnit($event, square.x, square.y)"
+                            @dblclick="onCellDoubleClick(square.x, square.y)">
+                            <img v-if="square.unit" src="../../../../assets/Images/MAN.png" />
+                            <img v-if="square.city" src="../../../../assets/Images/baseIcon.png"
+                                :title="square.city.name" />
+                            {{ square.movementCounter }}
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
 
@@ -31,6 +29,9 @@
                     <button @click="isSaving = false; modal.saves = true">
                         Load
                     </button>
+                    <button @click="this.$router.push({ name: 'arena'})">
+                        Arena
+                    </button>
                 </div>
                 <div>
                     <button @click="onExit">
@@ -42,7 +43,8 @@
                 @selectedId="onSaveSelected"></game-saves-modal>
         </div>
 
-        <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit"></CityModal>
+        <CityModal :open="modal.city" @close="modal.city = false" :city="selectedCity" @spawnUnit="spawnUnit">
+        </CityModal>
         <HeroScreenModal :open="modal.heroScreen" :hero="selectedCell?.unit" @close="modal.heroScreen = false">
         </HeroScreenModal>
     </div>
@@ -100,12 +102,12 @@
     float: right;
 }
 
-#wrapper {
+#gameArea {
     flex-grow: 1;
+    overflow: scroll;
 }
 
 #actionMenu {
-    width: 250px;
     background-color: rgb(75, 75, 75);
     align-items: center;
 }
@@ -113,11 +115,7 @@
 #gameBoard td img {
     max-width: 75px;
     max-height: 75px;
-}
-
-.row {
-    width: 100%;
-}
+};
 </style>
 
 <script>
@@ -139,8 +137,8 @@ export default {
             saves: null,
             selectedCell: null,
             selectedCity: null,
-            fieldSizeY: 20,
-            fieldSizeX: 10,
+            fieldSizeY: 50,
+            fieldSizeX: 50,
             modal: {
                 saves: false,
                 city: false,
