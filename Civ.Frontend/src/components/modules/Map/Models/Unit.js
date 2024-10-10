@@ -1,18 +1,19 @@
-export default class Unit {
-    id = null;
+export default class Creature {
     name = "";
     type = "";
     team = "";
+    id = null;
  
-    constructor(type, name, team) 
+    constructor(type, name, team, id) 
     {
         this.type = type;
         this.name = name;
         this.team = team;
+        this.id = id;
     }
 }
 
-class Hero extends Unit {
+class Hero extends Creature {
 
     name = null;
     baseDamage = null;
@@ -29,12 +30,17 @@ class Hero extends Unit {
         inteligance: null, //more mana
     }
 
-    units = [] //place for 
+    constructor(type, name, team, id){
+        super(type, name, team, id);
+    }
+
+    
+    Creatures = [] //place for 
 
 
 }   
 
-class Monster extends Unit {
+class Monster extends Creature {
 
     name = null;
     baseDamage = null;
@@ -50,4 +56,9 @@ class Monster extends Unit {
         speed: null, //walks further
         inteligance: null, //more mana
     }
+
+    constructor(type, name, team, id){
+        super(type, name, team, id);
+    }
 }
+

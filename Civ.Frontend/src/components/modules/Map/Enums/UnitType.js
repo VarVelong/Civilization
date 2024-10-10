@@ -1,8 +1,7 @@
 const UnitType = {
     Undefined: 0,
-    Settler: 1,
-    Hero: 2,
-    Monster: 3,
+    Hero: 1,
+    Monster: 2,
   };
 
 export default UnitType;
